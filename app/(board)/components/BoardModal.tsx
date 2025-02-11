@@ -1,11 +1,23 @@
 "use client";
 
-import ModalWrapper from "@/app/components/ModalWrapper";
+import { useModalStore } from "@/app/store";
+import BoardModalInner from "./BoardModalInner";
 
 export default function BoardModal() {
+  const isOpen = useModalStore((state) => state.isOpen);
+  const handleClose = useModalStore((state) => state.handleClose);
   return (
-    <div className="size-60 bg-white fixed top-32 left-0 right-0 mx-auto" />
+    <>
+      {isOpen ? (
+        <div
+          tabIndex={0}
+          role="button"
+          onClick={handleClose}
+          className="bg-black/60 fixed top-0 left-0 right-0 bottom-0 z-30"
+        >
+          <BoardModalInner />
+        </div>
+      ) : null}
+    </>
   );
 }
-
-export const BoardCreationModal = ModalWrapper(BoardModal);

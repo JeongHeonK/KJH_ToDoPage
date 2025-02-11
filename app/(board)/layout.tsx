@@ -1,10 +1,10 @@
 import { PropsWithChildren } from "react";
-import { BoardCreationModal } from "./components/BoardModal";
+import BoardModal from "./components/BoardModal";
 
 export default function BoardLayout({ children }: PropsWithChildren) {
   return (
     <>
-      <BoardCreationModal />
+      <BoardModal />
       {children}
     </>
   );
