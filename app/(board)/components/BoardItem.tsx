@@ -14,9 +14,8 @@ export default function BoardItem({
   const router = useRouter();
 
   const handleClick = () => {
-    router.push("/works");
+    router.push(`/works/${encodeURIComponent(title)}`);
   };
-
   return (
     <div
       tabIndex={0}
