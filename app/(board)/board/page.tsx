@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import BoardPageScene from "../components";
 
 export const metadata: Metadata = {
   title: "Board",
@@ -6,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function BoardPage() {
-  return <div className="bg-zinc-100 m-2">to-do-app(board)</div>;
+  return <BoardPageScene />;
 }
