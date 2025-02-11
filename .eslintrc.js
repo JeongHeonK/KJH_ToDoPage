@@ -32,5 +32,6 @@ module.exports = {
     "@typescript-eslint/naming-convention": "off",
     "react/button-has-type": "off",
     "no-param-reassign": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
   },
 };
