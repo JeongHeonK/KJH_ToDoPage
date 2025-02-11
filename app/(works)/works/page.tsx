@@ -1,3 +1,3 @@
-export default function Home() {
-  return <div className="bg-zinc-100 m-2">to-do-app(to-do)</div>;
+export default function WorkPage() {
+  return <div className="bg-zinc-100 m-2">목록에서 할일을 선택해주세요</div>;
 }

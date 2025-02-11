@@ -5,7 +5,8 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function Header() {
   const pathName = usePathname();
-  const path = pathName.slice(1);
+  const decodedPathName = decodeURI(pathName);
+  const path = decodedPathName.slice(1).split("/").join(" > ");
 
   return (
     <header className="flex items-center gap-2 pt-2">
