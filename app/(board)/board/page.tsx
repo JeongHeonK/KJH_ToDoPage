@@ -1,3 +1,3 @@
 export default function BoardPage() {
-  return <div className="w-full">to-do-app(board)</div>;
+  return <div className="bg-zinc-100 m-2">to-do-app(board)</div>;
 }
