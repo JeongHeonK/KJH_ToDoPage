@@ -8,4 +8,4 @@ coverage/
 
 next.config.js
 /next.config.js
-tailwind.config.js
+tailwind.config.ts
