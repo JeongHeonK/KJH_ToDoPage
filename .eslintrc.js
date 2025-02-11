@@ -23,5 +23,13 @@ module.exports = {
   rules: {
     "@typescript-eslint/dot-notation": "error",
     "react/react-in-jsx-scope": "off",
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off",
+    "@typescript-eslint/no-shadow": "off",
+    "@typescript-eslint/naming-convention": "off",
+    "react/button-has-type": "off",
+    "no-param-reassign": "off",
   },
 };
