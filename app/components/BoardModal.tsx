@@ -1,6 +1,7 @@
 "use client";
 
 import { useModalStore } from "../store";
+import ModalForm from "./ModalForm";
 
 export default function BoardModal() {
   const isOpen = useModalStore((state) => state.isOpen);
@@ -15,7 +16,7 @@ export default function BoardModal() {
           onClick={handleClose}
           className="bg-black/40 fixed inset-0"
         >
-          <form />
+          <ModalForm />
         </div>
       ) : null}
     </>

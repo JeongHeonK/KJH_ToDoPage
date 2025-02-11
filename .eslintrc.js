@@ -37,5 +37,6 @@ module.exports = {
     "import/no-extraneous-dependencies": "off",
     "react/jsx-no-useless-fragment": "off",
     "react/jsx-no-constructed-context-values": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
   },
 };
