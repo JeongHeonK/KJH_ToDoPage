@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className={`${notoSans.className} antialiased`}>
         <Header />
-        <main className="bg-zinc-100 h-screen px-2 pt-16">{children}</main>
+        <main className="bg-white h-screen px-2 pt-16">{children}</main>
       </body>
     </html>
   );
