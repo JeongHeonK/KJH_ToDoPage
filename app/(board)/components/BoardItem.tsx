@@ -21,7 +21,7 @@ export default function BoardItem({
       tabIndex={0}
       role="button"
       onClick={handleClick}
-      className={`size-52 ${color} rounded-md shadow-md`}
+      className={`size-52 ${color} rounded-md shadow-md hover:-translate-y-1 hover:translate-x-1 transition-transform`}
     >
       {title}
     </div>
