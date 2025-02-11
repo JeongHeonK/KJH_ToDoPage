@@ -33,5 +33,8 @@ module.exports = {
     "react/button-has-type": "off",
     "no-param-reassign": "off",
     "jsx-a11y/click-events-have-key-events": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "import/no-extraneous-dependencies": "off",
+    "react/jsx-no-useless-fragment": "off",
   },
 };
