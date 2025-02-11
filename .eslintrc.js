@@ -36,5 +36,6 @@ module.exports = {
     "@typescript-eslint/no-use-before-define": "off",
     "import/no-extraneous-dependencies": "off",
     "react/jsx-no-useless-fragment": "off",
+    "react/jsx-no-constructed-context-values": "off",
   },
 };

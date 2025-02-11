@@ -11,10 +11,11 @@ export default function BoardModal() {
         <div
           role="button"
           tabIndex={0}
+          aria-label="모달 배경"
           onClick={handleClose}
           className="bg-black/40 fixed inset-0"
         >
-          modal
+          <form />
         </div>
       ) : null}
     </>
