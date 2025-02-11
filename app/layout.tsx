@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import TodoSidebar from "./components/TodoSidebar";
 import Header from "./components/Header";
 
 const notoSans = Noto_Sans_KR({
@@ -22,13 +20,8 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${notoSans.className} antialiased`}>
-        <SidebarProvider>
-          <TodoSidebar />
-          <main className="flex-1">
-            <Header />
-            {children}
-          </main>
-        </SidebarProvider>
+        <Header />
+        <main className="bg-white h-screen px-2 pt-16">{children}</main>
       </body>
     </html>
   );
