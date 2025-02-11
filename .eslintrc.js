@@ -4,6 +4,7 @@ module.exports = {
     es2021: true,
   },
   extends: [
+    "next/core-web-vitals",
     "airbnb",
     "airbnb-typescript",
     "plugin:@typescript-eslint/recommended",
@@ -23,5 +24,10 @@ module.exports = {
   rules: {
     "@typescript-eslint/dot-notation": "error",
     "react/react-in-jsx-scope": "off",
+    "import/prefer-default-export": "off",
+    "import/extensions": "off",
+    "react/require-default-props": "off",
+    "react/jsx-props-no-spreading": "off",
+    "global-require": "off",
   },
 };
