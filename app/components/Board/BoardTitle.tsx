@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import FlexSpace from "./FlexSpace";
+import FlexSpace from "../FlexSpace";
 
 interface BoardTitleProps {
   title?: string;
