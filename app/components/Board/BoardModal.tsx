@@ -1,7 +1,7 @@
 "use client";
 
-import { useModalStore } from "../store";
-import ModalForm from "./ModalForm";
+import { useModalStore } from "../../store";
+import ModalForm from "../ModalForm";
 
 export default function BoardModal() {
   const isOpen = useModalStore((state) => state.isOpen);
