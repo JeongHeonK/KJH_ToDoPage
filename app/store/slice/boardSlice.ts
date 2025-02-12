@@ -4,6 +4,7 @@ type Board = {
   id: string;
   title?: string;
   color: string;
+  todoIds: string[] | [];
 };
 
 export type BoardState = {

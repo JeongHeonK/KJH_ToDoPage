@@ -66,7 +66,7 @@ const useKanban = () => {
 
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
     const id = nanoid(8);
-    const newData = { ...data, id, color };
+    const newData = { ...data, id, color, todoIds: [] };
     addBoard(newData);
     onClose();
   };
