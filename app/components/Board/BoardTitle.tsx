@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { useBoardsStore, useTodoStore } from "@/app/store";
+import { delay } from "@/app/util";
 import FlexSpace from "../FlexSpace";
 
 interface BoardTitleProps {
@@ -12,8 +13,13 @@ export default function BoardTitle({ boardId }: BoardTitleProps) {
   );
   const deleteBoard = useBoardsStore((state) => state.deleteBoard);
   const deleteTodo = useTodoStore((state) => state.deleteTodo);
+  const changeExistingState = useBoardsStore(
+    (state) => state.changeExistingState,
+  );
 
-  const handleClickDelete = () => {
+  const handleClickDelete = async () => {
+    changeExistingState(boardId);
+    await delay(200);
     deleteBoard(boardId);
     if (board?.todoIds && board.todoIds.length > 0) {
       board.todoIds.forEach((id) => deleteTodo(id));

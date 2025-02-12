@@ -66,7 +66,7 @@ const useModalBoardForm = () => {
 
   const onSubmit: SubmitHandler<z.infer<typeof boardFormSchema>> = (data) => {
     const id = nanoid(8);
-    const newData = { ...data, id, color, todoIds: [] };
+    const newData = { ...data, id, color, todoIds: [], isExisting: true };
     addBoard(newData);
     closeModal("idle");
   };
