@@ -5,16 +5,12 @@ import FlexSpace from "./FlexSpace";
 import { useModalStore } from "../store";
 
 export default function Header() {
-  const modalActions = useModalStore((state) => state.actions);
+  const handleOpen = useModalStore((state) => state.handleOpen);
   return (
     <header className="p-3 bg-slate-200 text-sm fixed left-0 right-0 top-0 flex items-center">
       <span>Kanban Board</span>
       <FlexSpace />
-      <Button
-        type="button"
-        className="text-sm"
-        onClick={modalActions.handleOpen}
-      >
+      <Button type="button" className="text-sm" onClick={handleOpen}>
         보드 생성
       </Button>
     </header>

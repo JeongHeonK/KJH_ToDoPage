@@ -7,26 +7,22 @@ export type ModalState = {
 };
 
 export type ModalAction = {
-  actions: {
-    handleClose: () => void;
-    handleOpen: () => void;
-  };
+  handleClose: () => void;
+  handleOpen: () => void;
 };
 
 export const useModalStore = create<ModalState & ModalAction>()(
   persist(
     immer((set) => ({
       isOpen: false,
-      actions: {
-        handleClose: () =>
-          set((state) => {
-            state.isOpen = false;
-          }),
-        handleOpen: () =>
-          set((state) => {
-            state.isOpen = true;
-          }),
-      },
+      handleClose: () =>
+        set((state) => {
+          state.isOpen = false;
+        }),
+      handleOpen: () =>
+        set((state) => {
+          state.isOpen = true;
+        }),
     })),
     { name: "todos-storage" },
   ),
