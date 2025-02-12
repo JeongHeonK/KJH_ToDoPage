@@ -1,5 +1,5 @@
 interface BorderItemProps {
-  title: string;
+  title?: string;
   color: string;
 }
 

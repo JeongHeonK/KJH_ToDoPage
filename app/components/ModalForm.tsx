@@ -15,8 +15,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MouseEvent, useState } from "react";
 import { TwitterPicker } from "react-color";
+import { nanoid } from "nanoid";
 import { formSchema } from "../util/validation";
-import { useModalStore } from "../store";
+import { useBoardsStore, useModalStore } from "../store";
 
 export default function ModalForm() {
   const { form, handleChange, onSubmit } = useKanban();
@@ -50,6 +51,7 @@ export default function ModalForm() {
 
 const useKanban = () => {
   const onClose = useModalStore((state) => state.handleClose);
+  const addBoard = useBoardsStore((state) => state.addBoard);
   const [color, setColor] = useState("#22194D");
   const form = useForm<z.infer<typeof formSchema> & { color: string }>({
     resolver: zodResolver(formSchema),
@@ -63,18 +65,9 @@ const useKanban = () => {
   };
 
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
-    if (!window) return;
-    const kanban = window.localStorage.getItem("board");
-    if (!kanban) {
-      window.localStorage.setItem(
-        "board",
-        JSON.stringify([{ title: data.title, color }]),
-      );
-    } else {
-      const kanbanArr = JSON.parse(kanban);
-      kanbanArr.push({ title: data.title, color });
-      window.localStorage.setItem("board", JSON.stringify(kanbanArr));
-    }
+    const id = nanoid(8);
+    const newData = { ...data, id, color };
+    addBoard(newData);
     onClose();
   };
   return { form, handleChange, onSubmit };
