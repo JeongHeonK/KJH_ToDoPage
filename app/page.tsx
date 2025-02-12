@@ -1,10 +1,10 @@
-import BoardModal from "./components/Board/BoardModal";
+import Modal from "./components/Modal/Modal";
 import HomeScene from "./components/HomeScene";
 
 export default function HomePage() {
   return (
     <>
-      <BoardModal />
+      <Modal />
       <HomeScene />
     </>
   );

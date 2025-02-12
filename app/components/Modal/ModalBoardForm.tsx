@@ -16,10 +16,10 @@ import { Input } from "@/components/ui/input";
 import { MouseEvent, useState } from "react";
 import { TwitterPicker } from "react-color";
 import { nanoid } from "nanoid";
-import { formSchema } from "../util/validation";
-import { useBoardsStore, useModalStore } from "../store";
+import { formSchema } from "../../util/validation";
+import { useBoardsStore, useModalStore } from "../../store";
 
-export default function ModalForm() {
+export default function ModalBoardForm() {
   const { form, handleChange, onSubmit } = useKanban();
 
   return (
@@ -50,7 +50,7 @@ export default function ModalForm() {
 }
 
 const useKanban = () => {
-  const handleClose = useModalStore((state) => state.handleClose);
+  const closeModal = useModalStore((state) => state.closeModal);
   const addBoard = useBoardsStore((state) => state.addBoard);
   const [color, setColor] = useState("#22194D");
   const form = useForm<z.infer<typeof formSchema> & { color: string }>({
@@ -68,7 +68,7 @@ const useKanban = () => {
     const id = nanoid(8);
     const newData = { ...data, id, color, todoIds: [] };
     addBoard(newData);
-    handleClose();
+    closeModal("idle");
   };
   return { form, handleChange, onSubmit };
 };
