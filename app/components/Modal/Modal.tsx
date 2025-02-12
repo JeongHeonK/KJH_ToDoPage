@@ -3,6 +3,7 @@
 import { useModalStore } from "@/app/store";
 import ModalBoardForm from "./ModalBoardForm";
 import ModalWrapper from "./ModalWrapper";
+import ModalTodoFrom from "./ModalTodoForm";
 
 export default function Modal() {
   const modalType = useModalStore((state) => state.modalType);
@@ -17,7 +18,7 @@ export default function Modal() {
     case "todo":
       return (
         <ModalWrapper>
-          <div className="size-40 bg-white" />
+          <ModalTodoFrom />
         </ModalWrapper>
       );
     default:

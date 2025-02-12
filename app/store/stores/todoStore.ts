@@ -4,7 +4,7 @@ import { immer } from "zustand/middleware/immer";
 
 type Todo = {
   boardId: string;
-  work: string;
+  todo?: string | undefined;
   isCompleted: boolean;
 };
 
@@ -30,7 +30,7 @@ export const useTodoStore = create<TodoState & TodoActions>()(
         set((state) => {
           state.todos[todoId].boardId = data.boardId;
           state.todos[todoId].isCompleted = data.isCompleted;
-          state.todos[todoId].work = data.work;
+          state.todos[todoId].todo = data.todo;
         }),
       addTodo: (todoId, data) =>
         set((state) => {
