@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import BoardWrapper from "./BoardWrapper";
-import BoardItem from "./BoardItem";
+import BoardWrapper from "./Board/BoardWrapper";
+import BoardItem from "./Board/BoardItem";
 import { useBoardsStore } from "../store";
 
 export default function HomeScene() {
@@ -23,9 +23,10 @@ export default function HomeScene() {
       {boards.map((item) => (
         <BoardItem
           key={item.id}
-          id={item.id}
+          boardId={item.id}
           title={item.title}
           color={item.color}
+          todoIds={item.todoIds}
         />
       ))}
     </BoardWrapper>
