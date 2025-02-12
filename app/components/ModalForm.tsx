@@ -50,7 +50,7 @@ export default function ModalForm() {
 }
 
 const useKanban = () => {
-  const onClose = useModalStore((state) => state.handleClose);
+  const modalActions = useModalStore((state) => state.actions);
   const addBoard = useBoardsStore((state) => state.addBoard);
   const [color, setColor] = useState("#22194D");
   const form = useForm<z.infer<typeof formSchema> & { color: string }>({
@@ -68,7 +68,7 @@ const useKanban = () => {
     const id = nanoid(8);
     const newData = { ...data, id, color, todoIds: [] };
     addBoard(newData);
-    onClose();
+    modalActions.handleClose();
   };
   return { form, handleChange, onSubmit };
 };
