@@ -13,7 +13,7 @@ export default function TodoCreateButton({
   const handleOpenModal = () => {
     openTodoModal("todo", boardId);
   };
-  console.log(boardId);
+
   return (
     <button
       type="button"
