@@ -1,23 +1,36 @@
 import { Badge } from "@/components/ui/badge";
+import { useBoardsStore, useTodoStore } from "@/app/store";
 import FlexSpace from "../FlexSpace";
 
 interface BoardTitleProps {
-  title?: string;
-  color: string;
+  boardId: string;
 }
 
-export default function BoardTitle({ color, title }: BoardTitleProps) {
+export default function BoardTitle({ boardId }: BoardTitleProps) {
+  const board = useBoardsStore((state) =>
+    state.boards.find((board) => board.id === boardId),
+  );
+  const deleteBoard = useBoardsStore((state) => state.deleteBoard);
+  const deleteTodo = useTodoStore((state) => state.deleteTodo);
+
+  const handleClickDelete = () => {
+    deleteBoard(boardId);
+    if (board?.todoIds && board.todoIds.length > 0) {
+      board.todoIds.forEach((id) => deleteTodo(id));
+    }
+  };
   return (
     <div className="flex items-center relative mb-3">
-      <Badge color={color} className="absolute top-0 -left-1">
-        {title}
+      <Badge color={board?.color} className="absolute top-0 -left-1">
+        {board?.title}
       </Badge>
       <FlexSpace />
       <button
-        style={{ background: color }}
-        className="px-2 py-0 rounded-full text-sm text-white"
+        style={{ color: board?.color }}
+        onClick={handleClickDelete}
+        className="px-2 -mt-1.5 rounded-full text-lg text-white"
       >
-        +
+        x
       </button>
     </div>
   );
