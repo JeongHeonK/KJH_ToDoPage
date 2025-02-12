@@ -21,7 +21,12 @@ export default function HomeScene() {
   return (
     <BoardWrapper>
       {boards.map((item) => (
-        <BorderItem key={item.title} title={item.title} color={item.color} />
+        <BorderItem
+          key={item.id}
+          id={item.id}
+          title={item.title}
+          color={item.color}
+        />
       ))}
     </BoardWrapper>
   );
