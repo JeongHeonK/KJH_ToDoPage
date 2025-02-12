@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import BoardWrapper from "./BoardWrapper";
-import BoardItem from "./BoardItem";
+import BoardWrapper from "./Board/BoardWrapper";
+import BoardItem from "./Board/BoardItem";
 import { useBoardsStore } from "../store";
 
 export default function HomeScene() {
