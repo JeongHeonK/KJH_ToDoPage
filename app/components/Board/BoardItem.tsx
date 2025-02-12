@@ -20,18 +20,7 @@ export default function BoardItem({
 }: BoardItemProps) {
   const todos = useTodoStore((state) => state.todos);
   const boardTodos = todoIds?.map((id) => ({ ...todos[id], id }));
-  const [boardAnimation, setBoardAnimation] = useState(
-    "opacity-0 translate-y-4",
-  );
-
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      setBoardAnimation("");
-    }, BOARD_DELAY);
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, []);
+  const boardAnimation = useBoardAnimation();
 
   return (
     <div
@@ -51,3 +40,20 @@ export default function BoardItem({
     </div>
   );
 }
+
+const useBoardAnimation = () => {
+  const [boardAnimation, setBoardAnimation] = useState(
+    "opacity-0 translate-y-4",
+  );
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setBoardAnimation("");
+    }, BOARD_DELAY);
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, []);
+
+  return boardAnimation;
+};
