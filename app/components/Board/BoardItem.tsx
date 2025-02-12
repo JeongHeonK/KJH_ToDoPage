@@ -1,5 +1,5 @@
 import { useTodoStore } from "@/app/store";
-import Todo from "../Todo/Todo";
+import TodoItem from "../Todo/TodoItem";
 import TodoCreateButton from "../Todo/TodoCreateButton";
 import BoardTitle from "./BoardTitle";
 
@@ -26,7 +26,13 @@ export default function BoardItem({
       draggable
     >
       <BoardTitle title={title} color={color} />
-      {boardTodos?.map((item) => <Todo key={item.id} />)}
+      {boardTodos?.map((item) => (
+        <TodoItem
+          key={item.id}
+          todo={item.todo}
+          isCompleted={item.isCompleted}
+        />
+      ))}
       <TodoCreateButton color={color} boardId={boardId} />
     </div>
   );
