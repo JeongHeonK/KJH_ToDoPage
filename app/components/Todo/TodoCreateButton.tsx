@@ -1,14 +1,13 @@
-import { useModalStore } from "@/app/store";
+import { useBoardsStore, useModalStore } from "@/app/store";
 
 interface TodoCreateButtonProps {
-  color: string;
   boardId: string;
 }
 
-export default function TodoCreateButton({
-  color,
-  boardId,
-}: TodoCreateButtonProps) {
+export default function TodoCreateButton({ boardId }: TodoCreateButtonProps) {
+  const color = useBoardsStore(
+    (state) => state.boards.find((board) => board.id === boardId)?.color,
+  );
   const openTodoModal = useModalStore((state) => state.openTodoModal);
   const handleOpenModal = () => {
     openTodoModal("todo", boardId);

@@ -21,13 +21,7 @@ export default function HomeScene() {
   return (
     <BoardWrapper>
       {boards.map((item) => (
-        <BoardItem
-          key={item.id}
-          boardId={item.id}
-          title={item.title}
-          color={item.color}
-          todoIds={item.todoIds}
-        />
+        <BoardItem key={item.id} boardId={item.id} />
       ))}
     </BoardWrapper>
   );
