@@ -27,7 +27,7 @@ export default function BoardItem({
     >
       <BoardTitle title={title} color={color} />
       {boardTodos?.map((item) => <Todo key={item.id} />)}
-      <TodoCreateButton color={color} />
+      <TodoCreateButton color={color} boardId={boardId} />
     </div>
   );
 }
