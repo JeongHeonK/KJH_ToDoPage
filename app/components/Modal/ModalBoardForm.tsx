@@ -16,11 +16,11 @@ import { Input } from "@/components/ui/input";
 import { MouseEvent, useState } from "react";
 import { TwitterPicker } from "react-color";
 import { nanoid } from "nanoid";
-import { formSchema } from "../util/validation";
-import { useBoardsStore, useModalStore } from "../store";
+import { boardFormSchema } from "../../util/validation";
+import { useBoardsStore, useModalStore } from "../../store";
 
-export default function ModalForm() {
-  const { form, handleChange, onSubmit } = useKanban();
+export default function ModalBoardForm() {
+  const { form, handleChange, onSubmit } = useModalBoardForm();
 
   return (
     <Form {...form}>
@@ -49,12 +49,12 @@ export default function ModalForm() {
   );
 }
 
-const useKanban = () => {
-  const handleClose = useModalStore((state) => state.handleClose);
+const useModalBoardForm = () => {
+  const closeModal = useModalStore((state) => state.closeModal);
   const addBoard = useBoardsStore((state) => state.addBoard);
   const [color, setColor] = useState("#22194D");
-  const form = useForm<z.infer<typeof formSchema> & { color: string }>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof boardFormSchema> & { color: string }>({
+    resolver: zodResolver(boardFormSchema),
     defaultValues: {
       title: "",
     },
@@ -64,11 +64,11 @@ const useKanban = () => {
     setColor(color.hex);
   };
 
-  const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
+  const onSubmit: SubmitHandler<z.infer<typeof boardFormSchema>> = (data) => {
     const id = nanoid(8);
     const newData = { ...data, id, color, todoIds: [] };
     addBoard(newData);
-    handleClose();
+    closeModal("idle");
   };
   return { form, handleChange, onSubmit };
 };

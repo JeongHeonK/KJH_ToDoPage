@@ -1,5 +1,5 @@
-import { useModalStore } from "./slice/modalStore";
-import { useBoardsStore } from "./slice/boardStore";
-import { useTodoStore } from "./slice/todoStore";
+import { useModalStore } from "./stores/modalStore";
+import { useBoardsStore } from "./stores/boardStore";
+import { useTodoStore } from "./stores/todoStore";
 
 export { useBoardsStore, useModalStore, useTodoStore };
