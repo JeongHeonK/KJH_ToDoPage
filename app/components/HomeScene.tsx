@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import BoardWrapper from "./BoardWrapper";
-import BorderItem from "./BorderItem";
+import BoardItem from "./BoardItem";
 import { useBoardsStore } from "../store";
 
 export default function HomeScene() {
@@ -21,7 +21,7 @@ export default function HomeScene() {
   return (
     <BoardWrapper>
       {boards.map((item) => (
-        <BorderItem
+        <BoardItem
           key={item.id}
           id={item.id}
           title={item.title}
