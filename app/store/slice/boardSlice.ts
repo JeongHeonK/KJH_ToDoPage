@@ -2,7 +2,7 @@ import { StateCreator } from "zustand";
 
 type Board = {
   id: string;
-  title: string;
+  title?: string;
   color: string;
 };
 
