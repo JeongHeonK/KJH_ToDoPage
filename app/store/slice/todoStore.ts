@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 type Todo = {
@@ -18,21 +19,24 @@ export type TodoActions = {
 };
 
 export const useTodoStore = create<TodoState & TodoActions>()(
-  immer((set) => ({
-    todos: {},
-    deleteTodo: (id) =>
-      set((state) => {
-        delete state.todos[id];
-      }),
-    editTodo: (todoId, data) =>
-      set((state) => {
-        state.todos[todoId].boardId = data.boardId;
-        state.todos[todoId].isCompleted = data.isCompleted;
-        state.todos[todoId].work = data.work;
-      }),
-    addTodo: (todoId, data) =>
-      set((state) => {
-        state.todos[todoId] = data;
-      }),
-  })),
+  persist(
+    immer((set) => ({
+      todos: {},
+      deleteTodo: (id) =>
+        set((state) => {
+          delete state.todos[id];
+        }),
+      editTodo: (todoId, data) =>
+        set((state) => {
+          state.todos[todoId].boardId = data.boardId;
+          state.todos[todoId].isCompleted = data.isCompleted;
+          state.todos[todoId].work = data.work;
+        }),
+      addTodo: (todoId, data) =>
+        set((state) => {
+          state.todos[todoId] = data;
+        }),
+    })),
+    { name: "todo-storage" },
+  ),
 );
