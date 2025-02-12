@@ -6,6 +6,7 @@ type Board = {
   id: string;
   title?: string;
   color: string;
+  isExisting: boolean;
   todoIds: string[];
 };
 
@@ -15,10 +16,11 @@ type BoardState = {
 
 type BoardActions = {
   addBoard: (data: Board) => void;
-  deleteBoard: (id: string) => void;
+  deleteBoard: (boardId: string) => void;
   editBoard: (data: Board) => void;
   deleteTodoId: (boardId: string, todoId: string) => void;
   addTodoId: (boardId: string, todoId: string) => void;
+  changeExistingState: (boardId: string) => void;
 };
 
 export const useBoardsStore = create<BoardState & BoardActions>()(
@@ -29,9 +31,16 @@ export const useBoardsStore = create<BoardState & BoardActions>()(
         set((state) => {
           state.boards.push(data);
         }),
-      deleteBoard: (id) =>
+      deleteBoard: (boardId) =>
         set((state) => {
-          state.boards = state.boards.filter((item) => item.id !== id);
+          state.boards = state.boards.filter((item) => item.id !== boardId);
+        }),
+      changeExistingState: (boardId) =>
+        set((state) => {
+          const targetIdx = state.boards.findIndex(
+            (board) => board.id === boardId,
+          );
+          state.boards[targetIdx].isExisting = false;
         }),
       editBoard: (data) =>
         set((state) => {
