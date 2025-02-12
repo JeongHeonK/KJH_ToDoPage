@@ -1,34 +1,29 @@
 import { useEffect, useState } from "react";
-import { useTodoStore } from "@/app/store";
+import { useBoardsStore, useTodoStore } from "@/app/store";
 import { BOARD_DELAY } from "@/app/constants";
 import TodoItem from "../Todo/TodoItem";
 import TodoCreateButton from "../Todo/TodoCreateButton";
 import BoardTitle from "./BoardTitle";
 
 interface BoardItemProps {
-  title?: string;
-  color: string;
   boardId: string;
-  todoIds: string[];
 }
 
-export default function BoardItem({
-  boardId,
-  title,
-  color,
-  todoIds,
-}: BoardItemProps) {
+export default function BoardItem({ boardId }: BoardItemProps) {
+  const board = useBoardsStore((state) =>
+    state.boards.find((board) => board.id === boardId),
+  );
   const todos = useTodoStore((state) => state.todos);
-  const boardTodos = todoIds?.map((id) => ({ ...todos[id], id }));
+  const boardTodos = board?.todoIds?.map((id) => ({ ...todos[id], id }));
   const boardAnimation = useBoardAnimation();
 
   return (
     <div
       className={`border-2 min-w-[250px] h-fit rounded-lg px-2 pt-1 pb-5 bg-white flex flex-col gap-3 ${boardAnimation} transition-all`}
-      style={{ border: `2px solid ${color}` }}
+      style={{ border: `2px solid ${board?.color}` }}
       draggable
     >
-      <BoardTitle title={title} color={color} />
+      <BoardTitle boardId={boardId} />
       {boardTodos?.map((item) => (
         <TodoItem
           key={item.id}
@@ -36,7 +31,7 @@ export default function BoardItem({
           isCompleted={item.isCompleted}
         />
       ))}
-      <TodoCreateButton color={color} boardId={boardId} />
+      <TodoCreateButton boardId={boardId} />
     </div>
   );
 }
