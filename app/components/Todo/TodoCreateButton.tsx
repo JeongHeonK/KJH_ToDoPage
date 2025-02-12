@@ -9,9 +9,9 @@ export default function TodoCreateButton({
   color,
   boardId,
 }: TodoCreateButtonProps) {
-  const openModal = useModalStore((state) => state.openModal);
+  const openTodoModal = useModalStore((state) => state.openTodoModal);
   const handleOpenModal = () => {
-    openModal("todo");
+    openTodoModal("todo", boardId);
   };
   console.log(boardId);
   return (

@@ -5,10 +5,10 @@ import FlexSpace from "./FlexSpace";
 import { useModalStore } from "../store";
 
 export default function Header() {
-  const openModal = useModalStore((state) => state.openModal);
+  const openBoardModal = useModalStore((state) => state.openBoardModal);
 
   const handleOpenModal = () => {
-    openModal("board");
+    openBoardModal("board");
   };
 
   return (
