@@ -13,14 +13,14 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import { TwitterPicker } from "react-color";
 import { nanoid } from "nanoid";
 import { boardFormSchema } from "../../util/validation";
 import { useBoardsStore, useModalStore } from "../../store";
 
 export default function ModalBoardForm() {
-  const { form, handleChange, onSubmit } = useModalBoardForm();
+  const { form, handleChange, onSubmit, inputRef } = useModalBoardForm();
 
   return (
     <Form {...form}>
@@ -36,7 +36,11 @@ export default function ModalBoardForm() {
             <FormItem>
               <FormLabel className="text-black">Board Title</FormLabel>
               <FormControl>
-                <Input placeholder="보드 이름을 입력해주세요" {...field} />
+                <Input
+                  placeholder="보드 이름을 입력해주세요"
+                  {...field}
+                  ref={inputRef}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -50,6 +54,7 @@ export default function ModalBoardForm() {
 }
 
 const useModalBoardForm = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const closeModal = useModalStore((state) => state.closeModal);
   const addBoard = useBoardsStore((state) => state.addBoard);
   const [color, setColor] = useState("#22194D");
@@ -70,5 +75,12 @@ const useModalBoardForm = () => {
     addBoard(newData);
     closeModal("idle");
   };
-  return { form, handleChange, onSubmit };
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  });
+
+  return { form, handleChange, onSubmit, inputRef };
 };
