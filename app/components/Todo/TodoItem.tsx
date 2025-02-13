@@ -1,7 +1,7 @@
 // import { AnimatePresence } from "motion/react";
 import { useTodoStore } from "@/app/store";
 import * as motion from "motion/react-client";
-import { MouseEvent } from "react";
+import TodoEditButton from "./TodoEditButton";
 
 interface TodoItemProps {
   todoId: string;
@@ -14,9 +14,7 @@ export default function TodoItem({ todoId }: TodoItemProps) {
   const handleChangeIsCompleted = () => {
     editIsCompleted(todoId);
   };
-  const handleEdit = (e: MouseEvent) => {
-    e.stopPropagation();
-  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -33,9 +31,7 @@ export default function TodoItem({ todoId }: TodoItemProps) {
       <p className={`${todo.isCompleted && "line-through"} flex-1`}>
         {todo.todo}
       </p>
-      <button onClick={handleEdit} className="p-3 text-sm">
-        edit
-      </button>
+      <TodoEditButton />
     </motion.div>
   );
 }
