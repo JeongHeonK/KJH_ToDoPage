@@ -20,21 +20,17 @@ export default function BoardItem({ boardId }: BoardItemProps) {
     <AnimatePresence>
       {board?.isExisting ? (
         <motion.div
+          style={{ border: `2px solid ${board?.color}` }}
           initial={{ opacity: 0, scale: 0.7 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="border-2 min-w-[250px] h-fit rounded-lg px-2 pt-1 pb-5 bg-white flex flex-col gap-3"
-          style={{ border: `2px solid ${board?.color}` }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
           exit={{ opacity: 0, scale: 0 }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+          className="border-2 min-w-[250px] h-fit rounded-lg px-2 pt-1 pb-5 bg-white flex flex-col gap-3"
           draggable
         >
           <BoardTitle boardId={boardId} />
           {boardTodos?.map((item) => (
-            <TodoItem
-              key={item.id}
-              todo={item.todo}
-              isCompleted={item.isCompleted}
-            />
+            <TodoItem key={item.id} todoId={item.id} />
           ))}
           <TodoCreateButton boardId={boardId} />
         </motion.div>
