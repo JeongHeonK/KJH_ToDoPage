@@ -1,15 +1,9 @@
 import { Badge } from "@/components/ui/badge";
-import { useBoardsStore, useModalStore, useTodoStore } from "@/app/store";
+import { useBoardsStore, useTodoStore } from "@/app/store";
 import { delay } from "@/app/util";
 import { ANIMATION_DELAY } from "@/app/constants";
-import { MouseEvent } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import FlexSpace from "../FlexSpace";
+import BoardDropdown from "./BoardDropdown";
 
 interface BoardTitleProps {
   boardId: string;
@@ -24,7 +18,6 @@ export default function BoardTitle({ boardId }: BoardTitleProps) {
   const changeExistingState = useBoardsStore(
     (state) => state.changeExistingState,
   );
-  const openBoardModal = useModalStore((state) => state.openBoardModal);
 
   const handleClickDelete = async () => {
     changeExistingState(boardId);
@@ -35,33 +28,13 @@ export default function BoardTitle({ boardId }: BoardTitleProps) {
     }
   };
 
-  const handleClickOpenModal = (e: MouseEvent) => {
-    e.stopPropagation();
-    openBoardModal("board", boardId);
-  };
-
   return (
     <div className="flex items-center relative mb-3">
       <Badge color={board?.color} className="absolute top-0 -left-1">
         {board?.title}
       </Badge>
       <FlexSpace />
-      <DropdownMenu>
-        <DropdownMenuTrigger style={{ color: board?.color }}>
-          ···
-        </DropdownMenuTrigger>
-        <DropdownMenuContent
-          className="w-10"
-          onCloseAutoFocus={(e) => e.preventDefault()}
-        >
-          <DropdownMenuItem
-            className="justify-center"
-            onClick={handleClickOpenModal}
-          >
-            수정
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <BoardDropdown color={board?.color} boardId={boardId} />
       <button
         style={{ color: board?.color }}
         onClick={handleClickDelete}
