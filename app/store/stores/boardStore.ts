@@ -11,7 +11,10 @@ type Board = {
 };
 
 type BoardState = {
-  boards: Board[];
+  boards: Board[] | null;
+  draggingTodoId: string | null;
+  draggingBoardId: string | null;
+  draggingIndex: number | null;
 };
 
 type BoardActions = {
@@ -21,29 +24,46 @@ type BoardActions = {
   deleteTodoId: (boardId: string, todoId: string) => void;
   addTodoId: (boardId: string, todoId: string) => void;
   changeExistingState: (boardId: string) => void;
+  markDraggingValues: (boardId: string, todoId: string, index: number) => void;
+  resetDraggingValues: () => void;
+  updateTodo: (
+    boardId: string,
+    newBoardId: string,
+    todoId: string,
+    index: number,
+    newIndex: number,
+  ) => void;
+  getIds: () => [string, string, number];
 };
 
 export const useBoardsStore = create<BoardState & BoardActions>()(
   persist(
-    immer((set) => ({
-      boards: [],
+    immer((set, get) => ({
+      boards: null,
+      draggingIndex: null,
+      draggingTodoId: null,
+      draggingBoardId: null,
       addBoard: (data) =>
         set((state) => {
-          state.boards.push(data);
+          if (state.boards) {
+            state.boards.push(data);
+          } else {
+            state.boards = [data];
+          }
         }),
       deleteBoard: (boardId) =>
         set((state) => {
-          state.boards = state.boards.filter((item) => item.id !== boardId);
-        }),
-      changeExistingState: (boardId) =>
-        set((state) => {
-          const targetIdx = state.boards.findIndex(
-            (board) => board.id === boardId,
-          );
-          state.boards[targetIdx].isExisting = false;
+          if (!state.boards) return;
+          if (state.boards?.length === 1) {
+            state.boards = null;
+          }
+          if (state.boards) {
+            state.boards = state.boards.filter((item) => item.id !== boardId);
+          }
         }),
       editBoard: (data) =>
         set((state) => {
+          if (!state.boards) return;
           const targetIdx = state.boards.findIndex(
             (item) => item.id === data.id,
           );
@@ -53,6 +73,7 @@ export const useBoardsStore = create<BoardState & BoardActions>()(
         }),
       deleteTodoId: (boardId, todoId) =>
         set((state) => {
+          if (!state.boards) return;
           const targetIdx = state.boards.findIndex(
             (item) => item.id === boardId,
           );
@@ -64,6 +85,7 @@ export const useBoardsStore = create<BoardState & BoardActions>()(
         }),
       addTodoId: (boardId, todoId) =>
         set((state) => {
+          if (!state.boards) return;
           const targetIdx = state.boards.findIndex(
             (item) => item.id === boardId,
           );
@@ -71,6 +93,60 @@ export const useBoardsStore = create<BoardState & BoardActions>()(
             state.boards[targetIdx].todoIds.push(todoId);
           }
         }),
+      changeExistingState: (boardId) =>
+        set((state) => {
+          if (!state.boards) return;
+          const targetIdx = state.boards.findIndex(
+            (board) => board.id === boardId,
+          );
+          if (targetIdx === -1) return;
+          state.boards[targetIdx].isExisting = false;
+        }),
+      markDraggingValues: (boardId, todoId, index) =>
+        set((state) => {
+          state.draggingIndex = index;
+          state.draggingTodoId = todoId;
+          state.draggingBoardId = boardId;
+        }),
+      resetDraggingValues: () =>
+        set((state) => {
+          state.draggingIndex = null;
+          state.draggingTodoId = null;
+          state.draggingBoardId = null;
+        }),
+      updateTodo: (boardId, newBoardId, todoId, index, newIndex) =>
+        set((state) => {
+          if (!state.boards) return;
+          const sourceBoard = state.boards.find(
+            (board) => board.id === boardId,
+          );
+          const targetBoard = state.boards.find(
+            (board) => board.id === newBoardId,
+          );
+
+          if (!sourceBoard || !targetBoard) return;
+
+          if (boardId === newBoardId) {
+            // 같은 보드 내에서 위치 변경
+            [sourceBoard.todoIds[index], sourceBoard.todoIds[newIndex]] = [
+              sourceBoard.todoIds[newIndex],
+              sourceBoard.todoIds[index],
+            ];
+          } else {
+            // 다른 보드로 이동
+            sourceBoard.todoIds.splice(index, 1);
+            targetBoard.todoIds.splice(newIndex, 0, todoId);
+          }
+        }),
+      getIds: () => {
+        const { draggingBoardId, draggingTodoId, draggingIndex } = get();
+
+        if (!draggingBoardId || !draggingTodoId || draggingIndex === null) {
+          return ["", "", -1];
+        }
+
+        return [draggingBoardId, draggingTodoId, draggingIndex];
+      },
     })),
     { name: "boards-storage" },
   ),
