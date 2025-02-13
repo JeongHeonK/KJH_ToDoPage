@@ -27,9 +27,9 @@ export default function ModalBoardForm() {
   return (
     <Form {...form}>
       <motion.form
-        initial={{ opacity: 0, y: 50 }}
+        initial={{ opacity: 0, y: 80 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", duration: 0.3 }}
+        transition={{ type: "spring", duration: 0.1 }}
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 bg-white w-[350px] p-3 mx-auto left-0 right-0 fixed top-32 rounded-md"
         onClick={useStopPropagation}
@@ -63,9 +63,11 @@ export default function ModalBoardForm() {
 
 const useModalBoardForm = () => {
   const boardId = useModalStore((state) => state.boardId);
-  const editedBoard = useBoardsStore((state) =>
-    state.boards.find((board) => board.id === boardId),
-  );
+  const editedBoard = useBoardsStore((state) => {
+    if (state.boards) {
+      return state.boards.find((board) => board.id === boardId);
+    }
+  });
   const closeModal = useModalStore((state) => state.closeModal);
   const addBoard = useBoardsStore((state) => state.addBoard);
   const editBoard = useBoardsStore((state) => state.editBoard);

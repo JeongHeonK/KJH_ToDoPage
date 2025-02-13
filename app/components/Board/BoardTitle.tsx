@@ -10,9 +10,11 @@ interface BoardTitleProps {
 }
 
 export default function BoardTitle({ boardId }: BoardTitleProps) {
-  const board = useBoardsStore((state) =>
-    state.boards.find((board) => board.id === boardId),
-  );
+  const board = useBoardsStore((state) => {
+    if (state.boards !== null) {
+      return state.boards.find((board) => board.id === boardId);
+    }
+  });
   const deleteBoard = useBoardsStore((state) => state.deleteBoard);
   const deleteTodo = useTodoStore((state) => state.deleteTodo);
   const changeExistingState = useBoardsStore(

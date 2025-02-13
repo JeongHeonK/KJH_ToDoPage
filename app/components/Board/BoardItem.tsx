@@ -1,5 +1,6 @@
 import { useBoardsStore, useTodoStore } from "@/app/store";
 import { AnimatePresence } from "motion/react";
+
 import TodoItem from "../Todo";
 import TodoCreateButton from "../Todo/TodoCreateButton";
 import BoardTitle from "./BoardTitle";
@@ -14,7 +15,7 @@ export default function BoardItem({ boardId }: BoardItemProps) {
     state.boards.find((board) => board.id === boardId),
   );
   const todos = useTodoStore((state) => state.todos);
-  const boardTodos = board?.todoIds?.map((id) => ({ ...todos[id], id }));
+  const boardArr = board?.todoIds?.map((id) => ({ ...todos[id], id }));
 
   return (
     <AnimatePresence>
@@ -22,9 +23,16 @@ export default function BoardItem({ boardId }: BoardItemProps) {
         <BoardItemWrapper color={board?.color}>
           <BoardTitle boardId={boardId} />
           <AnimatePresence>
-            {boardTodos?.map(
-              (item) =>
-                item.isExisting && <TodoItem key={item.id} todoId={item.id} />,
+            {boardArr?.map(
+              (item, index) =>
+                item.isExisting && (
+                  <TodoItem
+                    key={item.id}
+                    todoId={item.id}
+                    boardId={boardId}
+                    index={index}
+                  />
+                ),
             )}
           </AnimatePresence>
           <TodoCreateButton boardId={boardId} />
