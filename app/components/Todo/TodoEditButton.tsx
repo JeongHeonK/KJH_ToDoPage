@@ -10,17 +10,25 @@ import { MouseEvent } from "react";
 interface TodoEditButtonProps {
   todoId: string;
   boardId: string;
+  isEditing: boolean;
+  onEdit: () => void;
+  onClick: () => void;
 }
 
 export default function TodoEditButton({
   todoId,
+  onEdit,
+  onClick,
   boardId,
+  isEditing,
 }: TodoEditButtonProps) {
   const deleteTodo = useTodoStore((state) => state.deleteTodo);
   const deleteTodoId = useBoardsStore((state) => state.deleteTodoId);
 
-  const handleEdit = (e: MouseEvent) => {
+  const handleClickEditing = (e: MouseEvent) => {
     e.stopPropagation();
+    onEdit();
+    onClick();
   };
 
   const handleDelete = (e: MouseEvent) => {
@@ -30,19 +38,36 @@ export default function TodoEditButton({
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>···</DropdownMenuTrigger>
-      <DropdownMenuContent
-        className="w-10"
-        onCloseAutoFocus={(e) => e.preventDefault()}
-      >
-        <DropdownMenuItem className="justify-center" onClick={handleEdit}>
+    <>
+      {isEditing ? (
+        <button
+          onClick={(e: MouseEvent) => {
+            e.stopPropagation();
+            onClick();
+          }}
+          className="text-[12px] px-2 py-1 rounded-md bg-green-700 text-white"
+        >
           수정
-        </DropdownMenuItem>
-        <DropdownMenuItem className="justify-center" onClick={handleDelete}>
-          삭제
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </button>
+      ) : (
+        <DropdownMenu>
+          <DropdownMenuTrigger>···</DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-10"
+            onCloseAutoFocus={(e) => e.preventDefault()}
+          >
+            <DropdownMenuItem
+              className="justify-center"
+              onClick={handleClickEditing}
+            >
+              수정
+            </DropdownMenuItem>
+            <DropdownMenuItem className="justify-center" onClick={handleDelete}>
+              삭제
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+    </>
   );
 }
