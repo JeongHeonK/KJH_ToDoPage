@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import { TwitterPicker } from "react-color";
 import { nanoid } from "nanoid";
+import * as motion from "motion/react-client";
 import { boardFormSchema } from "../../util/validation";
 import { useBoardsStore, useModalStore } from "../../store";
 
@@ -24,7 +25,10 @@ export default function ModalBoardForm() {
 
   return (
     <Form {...form}>
-      <form
+      <motion.form
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: "spring", duration: 0.3 }}
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 bg-white w-[350px] p-3 mx-auto left-0 right-0 fixed top-32 rounded-md"
         onClick={(e: MouseEvent) => e.stopPropagation()}
@@ -46,22 +50,36 @@ export default function ModalBoardForm() {
             </FormItem>
           )}
         />
-        <TwitterPicker className="mx-auto rounded-lg" onChange={handleChange} />
+        <TwitterPicker
+          className="mx-auto rounded-lg"
+          onChangeComplete={handleChange}
+        />
         <Button type="submit">Submit</Button>
-      </form>
+      </motion.form>
     </Form>
   );
 }
 
 const useModalBoardForm = () => {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const boardId = useModalStore((state) => state.boardId);
+  const editedBoard = useBoardsStore((state) =>
+    state.boards.find((board) => board.id === boardId),
+  );
   const closeModal = useModalStore((state) => state.closeModal);
   const addBoard = useBoardsStore((state) => state.addBoard);
-  const [color, setColor] = useState("#22194D");
+  const editBoard = useBoardsStore((state) => state.editBoard);
+
+  const isEditing = editedBoard !== undefined;
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [color, setColor] = useState(() =>
+    isEditing ? editedBoard.color : "#22194D",
+  );
+
   const form = useForm<z.infer<typeof boardFormSchema> & { color: string }>({
     resolver: zodResolver(boardFormSchema),
     defaultValues: {
-      title: "",
+      title: isEditing ? editedBoard.title : "",
     },
   });
 
@@ -72,7 +90,12 @@ const useModalBoardForm = () => {
   const onSubmit: SubmitHandler<z.infer<typeof boardFormSchema>> = (data) => {
     const id = nanoid(8);
     const newData = { ...data, id, color, todoIds: [], isExisting: true };
-    addBoard(newData);
+    if (isEditing) {
+      const editedData = { ...editedBoard, title: data.title, color };
+      editBoard(editedData);
+    } else {
+      addBoard(newData);
+    }
     closeModal("idle");
   };
 

@@ -3,6 +3,7 @@ import { useBoardsStore, useTodoStore } from "@/app/store";
 import { delay } from "@/app/util";
 import { ANIMATION_DELAY } from "@/app/constants";
 import FlexSpace from "../FlexSpace";
+import BoardDropdown from "./BoardDropdown";
 
 interface BoardTitleProps {
   boardId: string;
@@ -26,16 +27,18 @@ export default function BoardTitle({ boardId }: BoardTitleProps) {
       board.todoIds.forEach((id) => deleteTodo(id));
     }
   };
+
   return (
     <div className="flex items-center relative mb-3">
       <Badge color={board?.color} className="absolute top-0 -left-1">
         {board?.title}
       </Badge>
       <FlexSpace />
+      <BoardDropdown color={board?.color} boardId={boardId} />
       <button
         style={{ color: board?.color }}
         onClick={handleClickDelete}
-        className="px-2 -mt-1.5 rounded-full text-lg text-white"
+        className="px-2 -mt-1.5 rounded-full text-lg text-white ml-1"
       >
         x
       </button>
