@@ -1,3 +1,4 @@
+import { useBoardsStore, useTodoStore } from "@/app/store";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,9 +7,26 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MouseEvent } from "react";
 
-export default function TodoEditButton() {
+interface TodoEditButtonProps {
+  todoId: string;
+  boardId: string;
+}
+
+export default function TodoEditButton({
+  todoId,
+  boardId,
+}: TodoEditButtonProps) {
+  const deleteTodo = useTodoStore((state) => state.deleteTodo);
+  const deleteTodoId = useBoardsStore((state) => state.deleteTodoId);
+
   const handleEdit = (e: MouseEvent) => {
     e.stopPropagation();
+  };
+
+  const handleDelete = (e: MouseEvent) => {
+    e.stopPropagation();
+    deleteTodo(todoId);
+    deleteTodoId(boardId, todoId);
   };
 
   return (
@@ -21,7 +39,7 @@ export default function TodoEditButton() {
         <DropdownMenuItem className="justify-center" onClick={handleEdit}>
           수정
         </DropdownMenuItem>
-        <DropdownMenuItem className="justify-center" onClick={handleEdit}>
+        <DropdownMenuItem className="justify-center" onClick={handleDelete}>
           삭제
         </DropdownMenuItem>
       </DropdownMenuContent>

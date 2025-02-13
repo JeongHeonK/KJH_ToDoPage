@@ -24,14 +24,16 @@ export default function TodoItem({ todoId }: TodoItemProps) {
         duration: 0.3,
         ease: "linear",
       }}
-      className="bg-white rounded-lg shadow-md py-2 px-3 flex items-center"
+      className="bg-white rounded-lg shadow-md py-2 px-3 flex items-center gap-2"
       onClick={handleChangeIsCompleted}
       draggable
     >
-      <p className={`${todo.isCompleted && "line-through"} flex-1`}>
+      <p
+        className={`${todo.isCompleted && "line-through"} text-wrap max-w-44 flex-1`}
+      >
         {todo.todo}
       </p>
-      <TodoEditButton />
+      <TodoEditButton todoId={todoId} boardId={todo.boardId} />
     </motion.div>
   );
 }
