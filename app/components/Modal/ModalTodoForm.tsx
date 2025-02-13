@@ -79,5 +79,6 @@ const useModalTodoFrom = () => {
       inputRef.current.focus();
     }
   });
+
   return { form, onSubmit, inputRef };
 };
