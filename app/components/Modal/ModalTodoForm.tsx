@@ -13,13 +13,13 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MouseEvent } from "react";
+import { MouseEvent, useEffect, useRef } from "react";
 import { nanoid } from "nanoid";
 import { useBoardsStore, useModalStore, useTodoStore } from "@/app/store";
 import { todoFormSchema } from "../../util/validation";
 
 export default function ModalTodoFrom() {
-  const { form, onSubmit } = useModalTodoFrom();
+  const { form, onSubmit, inputRef } = useModalTodoFrom();
 
   return (
     <Form {...form}>
@@ -35,7 +35,11 @@ export default function ModalTodoFrom() {
             <FormItem>
               <FormLabel className="text-black">할 일</FormLabel>
               <FormControl>
-                <Input placeholder="할 일을 입력해주세요" {...field} />
+                <Input
+                  placeholder="할 일을 입력해주세요"
+                  {...field}
+                  ref={inputRef}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -50,9 +54,9 @@ export default function ModalTodoFrom() {
 const useModalTodoFrom = () => {
   const addTodo = useTodoStore((state) => state.addTodo);
   const boardId = useModalStore((state) => state.boardId);
-  const resetBoardId = useModalStore((state) => state.resetBoardId);
   const closeModal = useModalStore((state) => state.closeModal);
   const addTodoId = useBoardsStore((state) => state.addTodoId);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<z.infer<typeof todoFormSchema> & { color: string }>({
     resolver: zodResolver(todoFormSchema),
@@ -67,8 +71,13 @@ const useModalTodoFrom = () => {
     const newData = { ...data, boardId, isCompleted: false };
     addTodoId(boardId, newTodoId);
     addTodo(newTodoId, newData);
-    resetBoardId();
     closeModal("idle");
   };
-  return { form, onSubmit };
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  });
+  return { form, onSubmit, inputRef };
 };

@@ -13,9 +13,10 @@ export type TodoState = {
 };
 
 export type TodoActions = {
-  deleteTodo: (todoId: string) => void;
-  editTodo: (todoId: string, data: Todo) => void;
   addTodo: (todoId: string, data: Todo) => void;
+  editTodo: (todoId: string, data: Todo) => void;
+  editIsCompleted: (todoId: string) => void;
+  deleteTodo: (todoId: string) => void;
 };
 
 export const useTodoStore = create<TodoState & TodoActions>()(
@@ -35,6 +36,10 @@ export const useTodoStore = create<TodoState & TodoActions>()(
       addTodo: (todoId, data) =>
         set((state) => {
           state.todos[todoId] = data;
+        }),
+      editIsCompleted: (todoId) =>
+        set((state) => {
+          state.todos[todoId].isCompleted = !state.todos[todoId].isCompleted;
         }),
     })),
     { name: "todo-storage" },

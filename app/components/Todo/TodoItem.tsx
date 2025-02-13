@@ -1,30 +1,41 @@
-import { useEffect, useState } from "react";
-import { TODO_DELAY } from "@/app/constants";
+// import { AnimatePresence } from "motion/react";
+import { useTodoStore } from "@/app/store";
+import * as motion from "motion/react-client";
+import { MouseEvent } from "react";
 
 interface TodoItemProps {
-  todo?: string;
-  isCompleted: boolean;
+  todoId: string;
 }
 
-export default function TodoItem({ todo, isCompleted }: TodoItemProps) {
-  const [todoAnimation, setTodoAnimation] = useState(
-    "opacity-0 -translate-x-7",
-  );
+export default function TodoItem({ todoId }: TodoItemProps) {
+  const todo = useTodoStore((state) => state.todos[todoId]);
+  const editIsCompleted = useTodoStore((state) => state.editIsCompleted);
 
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      setTodoAnimation("");
-    }, TODO_DELAY);
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, []);
-
+  const handleChangeIsCompleted = () => {
+    editIsCompleted(todoId);
+  };
+  const handleEdit = (e: MouseEvent) => {
+    e.stopPropagation();
+  };
   return (
-    <div
-      className={`bg-white rounded-lg shadow-md py-2 px-3 ${todoAnimation} transition-all`}
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{
+        delay: 0.2,
+        duration: 0.3,
+        ease: "linear",
+      }}
+      className="bg-white rounded-lg shadow-md py-2 px-3 flex items-center"
+      onClick={handleChangeIsCompleted}
+      draggable
     >
-      <span className={`${isCompleted && "line-through"}`}>{todo}</span>
-    </div>
+      <p className={`${todo.isCompleted && "line-through"} flex-1`}>
+        {todo.todo}
+      </p>
+      <button onClick={handleEdit} className="p-3 text-sm">
+        edit
+      </button>
+    </motion.div>
   );
 }
