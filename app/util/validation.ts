@@ -15,3 +15,5 @@ export const todoFormSchema = z.object({
     .max(20, { message: "20글자 이하로 입력해주세요." })
     .optional(),
 });
+
+export const todoValidation = todoFormSchema.safeParse;
