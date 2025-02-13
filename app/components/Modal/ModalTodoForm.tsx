@@ -50,7 +50,6 @@ export default function ModalTodoFrom() {
 const useModalTodoFrom = () => {
   const addTodo = useTodoStore((state) => state.addTodo);
   const boardId = useModalStore((state) => state.boardId);
-  const resetBoardId = useModalStore((state) => state.resetBoardId);
   const closeModal = useModalStore((state) => state.closeModal);
   const addTodoId = useBoardsStore((state) => state.addTodoId);
 
@@ -67,7 +66,6 @@ const useModalTodoFrom = () => {
     const newData = { ...data, boardId, isCompleted: false };
     addTodoId(boardId, newTodoId);
     addTodo(newTodoId, newData);
-    resetBoardId();
     closeModal("idle");
   };
   return { form, onSubmit };

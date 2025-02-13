@@ -10,7 +10,6 @@ export type ModalAction = {
   openBoardModal: (type: "board") => void;
   openTodoModal: (type: "todo", boardId: string) => void;
   closeModal: (type: "idle") => void;
-  resetBoardId: () => void;
 };
 
 export const useModalStore = create<ModalState & ModalAction>()(
@@ -26,15 +25,10 @@ export const useModalStore = create<ModalState & ModalAction>()(
         state.modalType = type;
         state.boardId = boardId;
       }),
-
     closeModal: (type) =>
       set((state) => {
         state.modalType = type;
-      }),
-    resetBoardId: () => {
-      set((state) => {
         state.boardId = null;
-      });
-    },
+      }),
   })),
 );
