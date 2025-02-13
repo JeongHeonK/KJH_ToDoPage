@@ -32,10 +32,14 @@ export default function TodoEditButton({
 
   const handleClickEditing = (e: MouseEvent) => {
     e.stopPropagation();
-    onEdit();
     onClick();
   };
 
+  const handleEdit = (e: MouseEvent) => {
+    e.stopPropagation();
+    onEdit();
+    onClick();
+  };
   const handleDelete = async (e: MouseEvent) => {
     e.stopPropagation();
     changeExistingState(todoId);
@@ -48,10 +52,7 @@ export default function TodoEditButton({
     <>
       {isEditing ? (
         <button
-          onClick={(e: MouseEvent) => {
-            e.stopPropagation();
-            onClick();
-          }}
+          onClick={handleEdit}
           className="text-[12px] px-2 py-1 rounded-md bg-green-700 text-white"
         >
           수정

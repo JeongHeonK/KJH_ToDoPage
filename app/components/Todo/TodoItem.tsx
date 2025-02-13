@@ -63,11 +63,10 @@ const useTodo = (todoId: string) => {
 
   const handleEditClick = useCallback(() => {
     if (!inputRef.current) return;
-
     const newTodo = inputRef.current.value;
-
     try {
       const response = todoValidation({ todo: newTodo });
+
       if (!response.success) throw new Error(response.error.message);
       editTodo(todoId, { ...todo, todo: newTodo });
     } catch (e) {
