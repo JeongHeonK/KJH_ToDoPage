@@ -13,8 +13,9 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MouseEvent, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { nanoid } from "nanoid";
+import { useStopPropagation } from "@/app/hooks";
 import { useBoardsStore, useModalStore, useTodoStore } from "@/app/store";
 import { todoFormSchema } from "../../util/validation";
 
@@ -26,7 +27,7 @@ export default function ModalTodoFrom() {
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 bg-white w-[350px] p-3 mx-auto left-0 right-0 fixed top-32 rounded-md"
-        onClick={(e: MouseEvent) => e.stopPropagation()}
+        onClick={useStopPropagation}
       >
         <FormField
           control={form.control}

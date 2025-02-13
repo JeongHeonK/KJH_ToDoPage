@@ -1,3 +1,4 @@
+import { usePreventDefault } from "@/app/hooks";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +18,7 @@ export default function TodoDropdown({ onEdit, onDelete }: TodoDropdownProps) {
       <DropdownMenuTrigger>···</DropdownMenuTrigger>
       <DropdownMenuContent
         className="w-10"
-        onCloseAutoFocus={(e) => e.preventDefault()}
+        onCloseAutoFocus={usePreventDefault}
       >
         <DropdownMenuItem className="justify-center" onClick={onEdit}>
           수정

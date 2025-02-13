@@ -1,3 +1,4 @@
+import { usePreventDefault } from "@/app/hooks";
 import { useModalStore } from "@/app/store";
 import {
   DropdownMenu,
@@ -25,7 +26,7 @@ export default function BoardDropdown({ color, boardId }: BoardDropdownProps) {
       <DropdownMenuTrigger style={{ color }}>···</DropdownMenuTrigger>
       <DropdownMenuContent
         className="w-10"
-        onCloseAutoFocus={(e) => e.preventDefault()}
+        onCloseAutoFocus={usePreventDefault}
       >
         <DropdownMenuItem
           className="justify-center"
