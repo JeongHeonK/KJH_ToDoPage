@@ -5,13 +5,7 @@ interface TodoCreateButtonProps {
 }
 
 export default function TodoCreateButton({ boardId }: TodoCreateButtonProps) {
-  const color = useBoardsStore(
-    (state) => state.boards.find((board) => board.id === boardId)?.color,
-  );
-  const openTodoModal = useModalStore((state) => state.openTodoModal);
-  const handleOpenModal = () => {
-    openTodoModal("todo", boardId);
-  };
+  const { handleOpenModal, color } = useTodoCreateButton(boardId);
 
   return (
     <button
@@ -24,3 +18,15 @@ export default function TodoCreateButton({ boardId }: TodoCreateButtonProps) {
     </button>
   );
 }
+
+const useTodoCreateButton = (boardId: string) => {
+  const color = useBoardsStore(
+    (state) => state.boards.find((board) => board.id === boardId)?.color,
+  );
+  const openTodoModal = useModalStore((state) => state.openTodoModal);
+  const handleOpenModal = () => {
+    openTodoModal("todo", boardId);
+  };
+
+  return { color, handleOpenModal };
+};
