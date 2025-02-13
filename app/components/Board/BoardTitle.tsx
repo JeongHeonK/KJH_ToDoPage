@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { useBoardsStore, useTodoStore } from "@/app/store";
 import { delay } from "@/app/util";
+import { ANIMATION_DELAY } from "@/app/constants";
 import FlexSpace from "../FlexSpace";
 
 interface BoardTitleProps {
@@ -19,7 +20,7 @@ export default function BoardTitle({ boardId }: BoardTitleProps) {
 
   const handleClickDelete = async () => {
     changeExistingState(boardId);
-    await delay(200);
+    await delay(ANIMATION_DELAY);
     deleteBoard(boardId);
     if (board?.todoIds && board.todoIds.length > 0) {
       board.todoIds.forEach((id) => deleteTodo(id));
