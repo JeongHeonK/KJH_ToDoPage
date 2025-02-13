@@ -1,13 +1,9 @@
 import { useBoardsStore, useTodoStore } from "@/app/store";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { delay } from "@/app/util/index";
-import { MouseEvent } from "react";
+import { MouseEvent, useCallback } from "react";
 import { ANIMATION_DELAY } from "@/app/constants";
+import TodoDropdown from "./TodoDropdown";
+import TodoEditConfirmButton from "./TodoEditConfirmButton";
 
 interface TodoEditButtonProps {
   todoId: string;
@@ -30,51 +26,31 @@ export default function TodoEditButton({
     (state) => state.changeExistingState,
   );
 
-  const handleClickEditing = (e: MouseEvent) => {
+  const handleClickEditing = useCallback((e: MouseEvent) => {
     e.stopPropagation();
     onClick();
-  };
+  }, []);
 
-  const handleEdit = (e: MouseEvent) => {
+  const handleEdit = useCallback((e: MouseEvent) => {
     e.stopPropagation();
     onEdit();
     onClick();
-  };
-  const handleDelete = async (e: MouseEvent) => {
+  }, []);
+
+  const handleDelete = useCallback(async (e: MouseEvent) => {
     e.stopPropagation();
     changeExistingState(todoId);
     await delay(ANIMATION_DELAY);
     deleteTodo(todoId);
     deleteTodoId(boardId, todoId);
-  };
+  }, []);
 
   return (
     <>
       {isEditing ? (
-        <button
-          onClick={handleEdit}
-          className="text-[12px] px-2 py-1 rounded-md bg-green-700 text-white"
-        >
-          수정
-        </button>
+        <TodoEditConfirmButton onEdit={handleEdit} />
       ) : (
-        <DropdownMenu>
-          <DropdownMenuTrigger>···</DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-10"
-            onCloseAutoFocus={(e) => e.preventDefault()}
-          >
-            <DropdownMenuItem
-              className="justify-center"
-              onClick={handleClickEditing}
-            >
-              수정
-            </DropdownMenuItem>
-            <DropdownMenuItem className="justify-center" onClick={handleDelete}>
-              삭제
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <TodoDropdown onDelete={handleDelete} onEdit={handleClickEditing} />
       )}
     </>
   );

@@ -1,6 +1,6 @@
 import { useBoardsStore, useTodoStore } from "@/app/store";
 import { AnimatePresence } from "motion/react";
-import TodoItem from "../Todo/TodoItem";
+import TodoItem from "../Todo";
 import TodoCreateButton from "../Todo/TodoCreateButton";
 import BoardTitle from "./BoardTitle";
 import BoardItemWrapper from "./BoardItemWrapper";
