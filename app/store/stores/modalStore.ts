@@ -7,7 +7,7 @@ export type ModalState = {
 };
 
 export type ModalAction = {
-  openBoardModal: (type: "board") => void;
+  openBoardModal: (type: "board", boardId?: string) => void;
   openTodoModal: (type: "todo", boardId: string) => void;
   closeModal: (type: "idle") => void;
 };
@@ -16,9 +16,12 @@ export const useModalStore = create<ModalState & ModalAction>()(
   immer((set) => ({
     modalType: "idle",
     boardId: null,
-    openBoardModal: (type) =>
+    openBoardModal: (type, boardId) =>
       set((state) => {
         state.modalType = type;
+        if (boardId) {
+          state.boardId = boardId;
+        }
       }),
     openTodoModal: (type, boardId) =>
       set((state) => {
