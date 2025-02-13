@@ -5,7 +5,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { delay } from "@/app/util/index";
 import { MouseEvent } from "react";
+import { ANIMATION_DELAY } from "@/app/constants";
 
 interface TodoEditButtonProps {
   todoId: string;
@@ -24,6 +26,9 @@ export default function TodoEditButton({
 }: TodoEditButtonProps) {
   const deleteTodo = useTodoStore((state) => state.deleteTodo);
   const deleteTodoId = useBoardsStore((state) => state.deleteTodoId);
+  const changeExistingState = useTodoStore(
+    (state) => state.changeExistingState,
+  );
 
   const handleClickEditing = (e: MouseEvent) => {
     e.stopPropagation();
@@ -31,8 +36,10 @@ export default function TodoEditButton({
     onClick();
   };
 
-  const handleDelete = (e: MouseEvent) => {
+  const handleDelete = async (e: MouseEvent) => {
     e.stopPropagation();
+    changeExistingState(todoId);
+    await delay(ANIMATION_DELAY);
     deleteTodo(todoId);
     deleteTodoId(boardId, todoId);
   };

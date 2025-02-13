@@ -18,15 +18,18 @@ export default function BoardItem({ boardId }: BoardItemProps) {
 
   return (
     <AnimatePresence>
-      {board?.isExisting ? (
+      {board?.isExisting && (
         <BoardItemWrapper color={board?.color}>
           <BoardTitle boardId={boardId} />
-          {boardTodos?.map((item) => (
-            <TodoItem key={item.id} todoId={item.id} />
-          ))}
+          <AnimatePresence>
+            {boardTodos?.map(
+              (item) =>
+                item.isExisting && <TodoItem key={item.id} todoId={item.id} />,
+            )}
+          </AnimatePresence>
           <TodoCreateButton boardId={boardId} />
         </BoardItemWrapper>
-      ) : null}
+      )}
     </AnimatePresence>
   );
 }

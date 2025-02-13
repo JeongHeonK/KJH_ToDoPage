@@ -32,15 +32,15 @@ export default function TodoItem({ todoId }: TodoItemProps) {
         />
       ) : (
         <p
-          className={`${todo.isCompleted && "line-through"} text-wrap max-w-44 flex-1`}
+          className={`${todo?.isCompleted && "line-through"} text-wrap max-w-44 flex-1`}
         >
-          {todo.todo}
+          {todo?.todo}
         </p>
       )}
       <TodoEditButton
         todoId={todoId}
         isEditing={isEditing}
-        boardId={todo.boardId}
+        boardId={todo?.boardId}
         onEdit={handleEditClick}
         onClick={handleClickEditing}
       />
