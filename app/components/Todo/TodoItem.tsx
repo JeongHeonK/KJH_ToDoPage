@@ -1,5 +1,12 @@
 import { useBoardsStore, useTodoStore } from "@/app/store";
-import { KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
+import {
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  DragEvent,
+} from "react";
 import { Input } from "@/components/ui/input";
 import { todoValidation } from "@/app/util/validation";
 import { useToast } from "@/hooks/use-toast";
@@ -136,22 +143,31 @@ const useDragTodo = (boardId: string, todoId: string, index: number) => {
   );
   const updateTodo = useBoardsStore((state) => state.updateTodo);
   const changeBoardId = useTodoStore((state) => state.changeBoardId);
+  const markDraggingType = useBoardsStore((state) => state.markDraggingType);
   const resetDraggingValues = useBoardsStore(
     (state) => state.resetDraggingValues,
   );
 
-  const handleDragStart = () => {
+  const handleDragStart = (e: DragEvent) => {
+    e.stopPropagation();
+    markDraggingType("todo");
     markDraggingValues(boardId, todoId, index);
   };
 
-  const handleDrop = () => {
+  const handleDrop = (e: DragEvent) => {
+    e.stopPropagation();
+    const { draggingType } = useBoardsStore.getState();
+    if (draggingType === "board") return;
+
     const startBoardId = useBoardsStore.getState().draggingBoardId;
     const startTodoId = useBoardsStore.getState().draggingTodoId;
     const startIndex = useBoardsStore.getState().draggingIndex;
 
     const isValid =
-      startBoardId !== null && startTodoId !== null && startIndex !== null;
-
+      startBoardId !== undefined &&
+      startTodoId !== undefined &&
+      startIndex !== undefined;
+    console.log(startBoardId, boardId);
     if (isValid) {
       updateTodo(startBoardId, boardId, startTodoId, startIndex, index);
       if (startBoardId !== boardId) {
