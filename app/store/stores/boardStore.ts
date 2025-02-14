@@ -12,9 +12,6 @@ type Board = {
 
 type BoardState = {
   boards: Board[] | null;
-  draggingTodoId: string | null;
-  draggingBoardId: string | null;
-  draggingIndex: number | null;
 };
 
 type BoardActions = {
@@ -24,21 +21,12 @@ type BoardActions = {
   deleteTodoId: (boardId: string, todoId: string) => void;
   addTodoId: (boardId: string, todoId: string) => void;
   changeExistingState: (boardId: string) => void;
-  markDraggingValues: (boardId: string, todoId: string, index: number) => void;
-  resetDraggingValues: () => void;
-  updateTodo: (
-    boardId: string,
-    newBoardId: string,
-    todoId: string,
-    index: number,
-    newIndex: number,
-  ) => void;
-  getIds: () => [string, string, number];
+  updateTodo: (boardId: string, dragTodoId: string, dropTodoId: string) => void;
 };
 
 export const useBoardsStore = create<BoardState & BoardActions>()(
   persist(
-    immer((set, get) => ({
+    immer((set) => ({
       boards: null,
       draggingIndex: null,
       draggingTodoId: null,
@@ -102,51 +90,25 @@ export const useBoardsStore = create<BoardState & BoardActions>()(
           if (targetIdx === -1) return;
           state.boards[targetIdx].isExisting = false;
         }),
-      markDraggingValues: (boardId, todoId, index) =>
+      updateTodo: (boardId, dragTodoId, dropTodoId) =>
         set((state) => {
-          state.draggingIndex = index;
-          state.draggingTodoId = todoId;
-          state.draggingBoardId = boardId;
-        }),
-      resetDraggingValues: () =>
-        set((state) => {
-          state.draggingIndex = null;
-          state.draggingTodoId = null;
-          state.draggingBoardId = null;
-        }),
-      updateTodo: (boardId, newBoardId, todoId, index, newIndex) =>
-        set((state) => {
-          if (!state.boards) return;
-          const sourceBoard = state.boards.find(
-            (board) => board.id === boardId,
-          );
-          const targetBoard = state.boards.find(
-            (board) => board.id === newBoardId,
-          );
+          if (state.boards) {
+            const targetIdx = state.boards.findIndex(
+              (board) => board.id === boardId,
+            );
+            const dragInx = state.boards[targetIdx].todoIds.findIndex(
+              (todoId) => todoId === dragTodoId,
+            );
+            const dropInx = state.boards[targetIdx].todoIds.findIndex(
+              (todoId) => todoId === dropTodoId,
+            );
 
-          if (!sourceBoard || !targetBoard) return;
-
-          if (boardId === newBoardId) {
-            // 같은 보드 내에서 위치 변경
-            [sourceBoard.todoIds[index], sourceBoard.todoIds[newIndex]] = [
-              sourceBoard.todoIds[newIndex],
-              sourceBoard.todoIds[index],
-            ];
-          } else {
-            // 다른 보드로 이동
-            sourceBoard.todoIds.splice(index, 1);
-            targetBoard.todoIds.splice(newIndex, 0, todoId);
+            const temp = state.boards[targetIdx].todoIds[dragInx];
+            state.boards[targetIdx].todoIds[dragInx] =
+              state.boards[targetIdx].todoIds[dropInx];
+            state.boards[targetIdx].todoIds[dropInx] = temp;
           }
         }),
-      getIds: () => {
-        const { draggingBoardId, draggingTodoId, draggingIndex } = get();
-
-        if (!draggingBoardId || !draggingTodoId || draggingIndex === null) {
-          return ["", "", -1];
-        }
-
-        return [draggingBoardId, draggingTodoId, draggingIndex];
-      },
     })),
     { name: "boards-storage" },
   ),
