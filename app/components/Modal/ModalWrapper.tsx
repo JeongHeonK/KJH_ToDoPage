@@ -2,10 +2,7 @@ import { useModalStore } from "@/app/store";
 import { PropsWithChildren } from "react";
 
 export default function ModalWrapper({ children }: PropsWithChildren) {
-  const closeModal = useModalStore((state) => state.closeModal);
-  const handleClose = () => {
-    closeModal("idle");
-  };
+  const handleClose = useModalWrapper();
 
   return (
     <div
@@ -19,3 +16,12 @@ export default function ModalWrapper({ children }: PropsWithChildren) {
     </div>
   );
 }
+
+const useModalWrapper = () => {
+  const closeModal = useModalStore((state) => state.closeModal);
+  const handleClose = () => {
+    closeModal("idle");
+  };
+
+  return handleClose;
+};
