@@ -5,6 +5,7 @@ import {
   DndContext,
   DragEndEvent,
   KeyboardSensor,
+  MouseSensor,
   PointerSensor,
   TouchSensor,
   useSensor,
@@ -29,6 +30,9 @@ export default function TodoItemsWrapper({
   };
 
   const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: { distance: 10 },
+    }),
     useSensor(PointerSensor, {
       activationConstraint: { delay: 100, tolerance: 5 },
     }),
