@@ -28,6 +28,7 @@ type BoardActions = {
   resetDraggingValues: () => void;
   changeBoardIdIndex: (boarId: string, newBoardId: string) => void;
   markDraggingType: (type?: "board" | "todo") => void;
+  moveTodo: (boardId: string, newBoardId: string, todoId: string) => void;
   markDraggingValues: (
     boardId?: string,
     todoId?: string,
@@ -132,27 +133,41 @@ export const useBoardsStore = create<BoardState & BoardActions>()(
             state.boards[index],
           ];
         }),
+      moveTodo: (boardId, newBoardId, todoId) =>
+        set((state) => {
+          if (!state.boards) return;
+
+          const index = state.boards.findIndex((board) => board.id === boardId);
+          const newIndex = state.boards.findIndex(
+            (board) => board.id === newBoardId,
+          );
+
+          state.boards[index].todoIds = state.boards[index].todoIds.filter(
+            (id) => id !== todoId,
+          );
+          state.boards[newIndex].todoIds.push(todoId);
+        }),
       updateTodo: (boardId, newBoardId, todoId, index, newIndex) =>
         set((state) => {
           if (!state.boards) return;
-          const sourceBoard = state.boards.find(
+          const isSameBoard = boardId === newBoardId;
+
+          const currentBoard = state.boards.find(
             (board) => board.id === boardId,
           );
           const targetBoard = state.boards.find(
             (board) => board.id === newBoardId,
           );
 
-          if (!sourceBoard || !targetBoard) return;
+          if (!currentBoard || !targetBoard) return;
 
-          if (boardId === newBoardId) {
-            // 같은 보드 내에서 위치 변경
-            [sourceBoard.todoIds[index], sourceBoard.todoIds[newIndex]] = [
-              sourceBoard.todoIds[newIndex],
-              sourceBoard.todoIds[index],
+          if (isSameBoard) {
+            [currentBoard.todoIds[index], currentBoard.todoIds[newIndex]] = [
+              currentBoard.todoIds[newIndex],
+              currentBoard.todoIds[index],
             ];
           } else {
-            // 다른 보드로 이동
-            sourceBoard.todoIds.splice(index, 1);
+            currentBoard.todoIds.splice(index, 1);
             targetBoard.todoIds.splice(newIndex, 0, todoId);
           }
         }),
