@@ -12,9 +12,10 @@ type Board = {
 
 type BoardState = {
   boards?: Board[];
-  draggingTodoId: string | null;
-  draggingBoardId: string | null;
-  draggingIndex: number | null;
+  draggingType?: "board" | "todo";
+  draggingTodoId?: string;
+  draggingBoardId?: string;
+  draggingIndex?: number;
 };
 
 type BoardActions = {
@@ -24,8 +25,14 @@ type BoardActions = {
   deleteTodoId: (boardId: string, todoId: string) => void;
   addTodoId: (boardId: string, todoId: string) => void;
   changeExistingState: (boardId: string) => void;
-  markDraggingValues: (boardId: string, todoId: string, index: number) => void;
   resetDraggingValues: () => void;
+  changeBoardIdIndex: (boarId: string, newBoardId: string) => void;
+  markDraggingType: (type?: "board" | "todo") => void;
+  markDraggingValues: (
+    boardId?: string,
+    todoId?: string,
+    index?: number,
+  ) => void;
   updateTodo: (
     boardId: string,
     newBoardId: string,
@@ -38,10 +45,6 @@ type BoardActions = {
 export const useBoardsStore = create<BoardState & BoardActions>()(
   persist(
     immer((set) => ({
-      boards: undefined,
-      draggingIndex: null,
-      draggingTodoId: null,
-      draggingBoardId: null,
       addBoard: (data) =>
         set((state) => {
           if (state.boards) {
@@ -101,6 +104,10 @@ export const useBoardsStore = create<BoardState & BoardActions>()(
           if (targetIdx === -1) return;
           state.boards[targetIdx].isExisting = false;
         }),
+      markDraggingType: (type) =>
+        set((state) => {
+          state.draggingType = type;
+        }),
       markDraggingValues: (boardId, todoId, index) =>
         set((state) => {
           state.draggingIndex = index;
@@ -109,9 +116,21 @@ export const useBoardsStore = create<BoardState & BoardActions>()(
         }),
       resetDraggingValues: () =>
         set((state) => {
-          state.draggingIndex = null;
-          state.draggingTodoId = null;
-          state.draggingBoardId = null;
+          state.draggingIndex = undefined;
+          state.draggingTodoId = undefined;
+          state.draggingBoardId = undefined;
+        }),
+      changeBoardIdIndex: (boardId, newBoardId) =>
+        set((state) => {
+          if (!state.boards) return;
+          const index = state.boards.findIndex((board) => board.id === boardId);
+          const newIndex = state.boards.findIndex(
+            (board) => board.id === newBoardId,
+          );
+          [state.boards[index], state.boards[newIndex]] = [
+            state.boards[newIndex],
+            state.boards[index],
+          ];
         }),
       updateTodo: (boardId, newBoardId, todoId, index, newIndex) =>
         set((state) => {
