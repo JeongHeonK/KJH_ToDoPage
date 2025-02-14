@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react";
 import { BoardItem, BoardWrapper } from "./Board";
 import { useBoardsStore } from "../store";
+import EmptyBoardMessage from "./EmptyBoardMessage";
 
 export default function HomeScene() {
   const [isLoading, setIsLoading] = useState(true);
   const boards = useBoardsStore((state) => state.boards);
+  const isEmptyBoards = boards === undefined || boards.length === 0;
 
   useEffect(() => {
     setIsLoading(false);
@@ -14,8 +16,7 @@ export default function HomeScene() {
 
   if (isLoading) return <div>Loading..</div>;
 
-  if (boards === undefined || boards.length === 0)
-    return <div> 아직 생성된 보드가 없습니다.</div>;
+  if (isEmptyBoards) return <EmptyBoardMessage />;
 
   return (
     <BoardWrapper>
