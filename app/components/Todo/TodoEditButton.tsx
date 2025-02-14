@@ -20,13 +20,35 @@ export default function TodoEditButton({
   boardId,
   isEditing,
 }: TodoEditButtonProps) {
+  const { handleEdit, handleDelete, handleChangeEditingState } =
+    useTodoEditButton({ todoId, onEdit, onClick, boardId });
+
+  return (
+    <>
+      {isEditing ? (
+        <TodoEditConfirmButton onEdit={handleEdit} />
+      ) : (
+        <TodoDropdown
+          onDelete={handleDelete}
+          onEdit={handleChangeEditingState}
+        />
+      )}
+    </>
+  );
+}
+
+type UseTodoEditButtonArgs = Omit<TodoEditButtonProps, "isEditing">;
+
+const useTodoEditButton = (args: UseTodoEditButtonArgs) => {
+  const { onClick, onEdit, todoId, boardId } = args;
+
   const deleteTodo = useTodoStore((state) => state.deleteTodo);
   const deleteTodoId = useBoardsStore((state) => state.deleteTodoId);
   const changeExistingState = useTodoStore(
     (state) => state.changeExistingState,
   );
 
-  const handleClickEditing = useCallback((e: MouseEvent) => {
+  const handleChangeEditingState = useCallback((e: MouseEvent) => {
     e.stopPropagation();
     onClick();
   }, []);
@@ -48,13 +70,5 @@ export default function TodoEditButton({
     [boardId, changeExistingState, deleteTodo, deleteTodoId, todoId],
   );
 
-  return (
-    <>
-      {isEditing ? (
-        <TodoEditConfirmButton onEdit={handleEdit} />
-      ) : (
-        <TodoDropdown onDelete={handleDelete} onEdit={handleClickEditing} />
-      )}
-    </>
-  );
-}
+  return { handleEdit, handleDelete, handleChangeEditingState };
+};
