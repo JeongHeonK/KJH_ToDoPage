@@ -15,7 +15,7 @@ export default function Header() {
       <h1 className="text-center flex-1">Kanban Board</h1>
       <Button
         type="button"
-        className="text-[12px] absolute right-2 top-1 bg-zinc-800 hover:opacity-55"
+        className="text-[12px] absolute right-3 py-1 px-2 top-1 bg-zinc-800 hover:opacity-55"
         onClick={handleOpenModal}
       >
         보드 생성
