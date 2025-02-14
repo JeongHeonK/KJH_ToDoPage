@@ -79,7 +79,7 @@ const useModalTodoFrom = () => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  });
+  }, []);
 
   return { form, onSubmit, inputRef };
 };
