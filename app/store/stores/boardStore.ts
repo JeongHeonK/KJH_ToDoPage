@@ -11,7 +11,7 @@ type Board = {
 };
 
 type BoardState = {
-  boards: Board[] | null;
+  boards: Board[] | undefined;
   draggingTodoId: string | null;
   draggingBoardId: string | null;
   draggingIndex: number | null;
@@ -33,13 +33,12 @@ type BoardActions = {
     index: number,
     newIndex: number,
   ) => void;
-  getIds: () => [string, string, number];
 };
 
 export const useBoardsStore = create<BoardState & BoardActions>()(
   persist(
-    immer((set, get) => ({
-      boards: null,
+    immer((set) => ({
+      boards: undefined,
       draggingIndex: null,
       draggingTodoId: null,
       draggingBoardId: null,
@@ -55,7 +54,7 @@ export const useBoardsStore = create<BoardState & BoardActions>()(
         set((state) => {
           if (!state.boards) return;
           if (state.boards?.length === 1) {
-            state.boards = null;
+            state.boards = undefined;
           }
           if (state.boards) {
             state.boards = state.boards.filter((item) => item.id !== boardId);
@@ -138,15 +137,6 @@ export const useBoardsStore = create<BoardState & BoardActions>()(
             targetBoard.todoIds.splice(newIndex, 0, todoId);
           }
         }),
-      getIds: () => {
-        const { draggingBoardId, draggingTodoId, draggingIndex } = get();
-
-        if (!draggingBoardId || !draggingTodoId || draggingIndex === null) {
-          return ["", "", -1];
-        }
-
-        return [draggingBoardId, draggingTodoId, draggingIndex];
-      },
     })),
     { name: "boards-storage" },
   ),
