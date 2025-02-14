@@ -22,7 +22,7 @@ export default function BoardItem({ boardId }: BoardItemProps) {
   return (
     <AnimatePresence>
       {board?.isExisting && (
-        <BoardItemWrapper color={board?.color}>
+        <BoardItemWrapper color={board?.color} boardId={boardId}>
           <BoardTitle boardId={boardId} />
           <AnimatePresence>
             {boardArr?.map(
