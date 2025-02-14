@@ -11,7 +11,7 @@ type Board = {
 };
 
 type BoardState = {
-  boards: Board[] | undefined;
+  boards?: Board[];
   draggingTodoId: string | null;
   draggingBoardId: string | null;
   draggingIndex: number | null;
