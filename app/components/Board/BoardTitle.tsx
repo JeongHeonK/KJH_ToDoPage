@@ -11,7 +11,7 @@ interface BoardTitleProps {
 
 export default function BoardTitle({ boardId }: BoardTitleProps) {
   const board = useBoardsStore((state) => {
-    if (state.boards !== null) {
+    if (state.boards) {
       return state.boards.find((board) => board.id === boardId);
     }
   });
