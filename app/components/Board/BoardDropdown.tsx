@@ -14,12 +14,7 @@ interface BoardDropdownProps {
 }
 
 export default function BoardDropdown({ color, boardId }: BoardDropdownProps) {
-  const openBoardModal = useModalStore((state) => state.openBoardModal);
-
-  const handleClickOpenModal = (e: MouseEvent) => {
-    e.stopPropagation();
-    openBoardModal("board", boardId);
-  };
+  const handleClickOpenModal = useBoardDropdown(boardId);
 
   return (
     <DropdownMenu>
@@ -38,3 +33,14 @@ export default function BoardDropdown({ color, boardId }: BoardDropdownProps) {
     </DropdownMenu>
   );
 }
+
+const useBoardDropdown = (boardId: string) => {
+  const openBoardModal = useModalStore((state) => state.openBoardModal);
+
+  const handleClickOpenModal = (e: MouseEvent) => {
+    e.stopPropagation();
+    openBoardModal("board", boardId);
+  };
+
+  return handleClickOpenModal;
+};

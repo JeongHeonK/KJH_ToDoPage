@@ -17,7 +17,6 @@ export default function TodoItemWrapper({
       role="button"
       className="bg-white rounded-lg shadow-md py-2 px-3 flex items-center gap-2"
       onClick={handleChangeIsCompleted}
-      draggable
     >
       {children}
     </div>
