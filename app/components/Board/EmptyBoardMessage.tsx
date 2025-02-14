@@ -1,4 +1,4 @@
-import BoardCreateButton from "./BoardCreateButton";
+import BoardCreateButton from "../BoardCreateButton";
 
 export default function EmptyBoardMessage() {
   return (

@@ -1,4 +1,3 @@
-import BoardItem from "./BoardItem";
-import BoardWrapper from "./BoardWrapper";
+import Boards from "./Boards";
 
-export { BoardItem, BoardWrapper };
+export default Boards;
