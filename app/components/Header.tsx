@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import FlexSpace from "./FlexSpace";
 import { useModalStore } from "../store";
 
 export default function Header() {
@@ -12,10 +11,13 @@ export default function Header() {
   };
 
   return (
-    <header className="p-3 bg-slate-200 text-sm fixed left-0 right-0 top-0 flex items-center">
-      <span>Kanban Board</span>
-      <FlexSpace />
-      <Button type="button" className="text-sm" onClick={handleOpenModal}>
+    <header className="p-3 bg text-md fixed left-0 right-0 top-0 flex items-center bg-zinc-100">
+      <h1 className="text-center flex-1">Kanban Board</h1>
+      <Button
+        type="button"
+        className="text-[12px] absolute right-2 top-1 bg-zinc-800 hover:opacity-55"
+        onClick={handleOpenModal}
+      >
         보드 생성
       </Button>
     </header>
