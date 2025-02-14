@@ -24,8 +24,6 @@ export default function TodoItemsWrapper({
 
     if (active.id === over?.id) return;
     if (over && over.id) {
-      console.log(active.id, over.id);
-      console.log("실행");
       updateTodo(boardId, active.id.toString(), over?.id.toString());
     }
   };
