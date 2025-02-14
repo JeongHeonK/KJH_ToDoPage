@@ -20,9 +20,11 @@ export default function TodoCreateButton({ boardId }: TodoCreateButtonProps) {
 }
 
 const useTodoCreateButton = (boardId: string) => {
-  const color = useBoardsStore(
-    (state) => state.boards.find((board) => board.id === boardId)?.color,
-  );
+  const color = useBoardsStore((state) => {
+    if (state.boards) {
+      return state.boards.find((board) => board.id === boardId)?.color;
+    }
+  });
   const openTodoModal = useModalStore((state) => state.openTodoModal);
   const handleOpenModal = () => {
     openTodoModal("todo", boardId);

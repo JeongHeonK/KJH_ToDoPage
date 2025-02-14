@@ -11,9 +11,11 @@ interface BoardItemProps {
 }
 
 export default function BoardItem({ boardId }: BoardItemProps) {
-  const board = useBoardsStore((state) =>
-    state.boards.find((board) => board.id === boardId),
-  );
+  const board = useBoardsStore((state) => {
+    if (state.boards) {
+      return state.boards.find((board) => board.id === boardId);
+    }
+  });
   const todos = useTodoStore((state) => state.todos);
   const boardArr = board?.todoIds?.map((id) => ({ ...todos[id], id }));
 
