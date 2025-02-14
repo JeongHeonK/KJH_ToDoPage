@@ -21,6 +21,12 @@ export default function TodoItem({ todoId }: TodoItemProps) {
     handleClickEditing,
   } = useTodo(todoId);
 
+  const editIsCompleted = useTodoStore((state) => state.editIsCompleted);
+
+  const handleChangeIsCompleted = () => {
+    editIsCompleted(todoId);
+  };
+
   return (
     <TodoItemWrapper todoId={todoId}>
       {isEditing ? (
@@ -32,6 +38,7 @@ export default function TodoItem({ todoId }: TodoItemProps) {
       ) : (
         <p
           className={`${todo?.isCompleted && "line-through"} text-wrap max-w-44 flex-1`}
+          onClick={handleChangeIsCompleted}
         >
           {todo?.todo}
         </p>
