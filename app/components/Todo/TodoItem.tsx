@@ -1,19 +1,16 @@
-import { useBoardsStore, useTodoStore } from "@/app/store";
+import { useTodoStore } from "@/app/store";
 import { KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { todoValidation } from "@/app/util/validation";
 import { useToast } from "@/hooks/use-toast";
-import { usePreventDefault } from "@/app/hooks";
 import TodoEditButton from "./TodoEditButton";
 import TodoItemWrapper from "./TodoItemWrapper";
 
 interface TodoItemProps {
   todoId: string;
-  boardId: string;
-  index: number;
 }
 
-export default function TodoItem({ todoId, boardId, index }: TodoItemProps) {
+export default function TodoItem({ todoId }: TodoItemProps) {
   const {
     todo,
     inputRef,
@@ -23,7 +20,7 @@ export default function TodoItem({ todoId, boardId, index }: TodoItemProps) {
     handleEditKeyDown,
     handleClickEditing,
   } = useTodo(todoId);
-  const { handleDragStart, handleDrop } = useDragTodo(boardId, todoId, index);
+
   return (
     <TodoItemWrapper todoId={todoId}>
       {isEditing ? (
@@ -34,11 +31,7 @@ export default function TodoItem({ todoId, boardId, index }: TodoItemProps) {
         />
       ) : (
         <p
-          onDrop={handleDrop}
-          onDragStart={handleDragStart}
-          onDragOver={usePreventDefault}
           className={`${todo?.isCompleted && "line-through"} text-wrap max-w-44 flex-1`}
-          draggable
         >
           {todo?.todo}
         </p>
@@ -128,32 +121,4 @@ const useTodo = (todoId: string) => {
     handleEditKeyDown,
     handleClickEditing,
   };
-};
-
-const useDragTodo = (boardId: string, todoId: string, index: number) => {
-  const markDraggingValues = useBoardsStore(
-    (state) => state.markDraggingValues,
-  );
-  const getIds = useBoardsStore((state) => state.getIds);
-  const updateTodo = useBoardsStore((state) => state.updateTodo);
-  const resetDraggingValues = useBoardsStore(
-    (state) => state.resetDraggingValues,
-  );
-
-  const handleDragStart = () => {
-    markDraggingValues(boardId, todoId, index);
-  };
-
-  const handleDrop = () => {
-    const ids = getIds();
-    const isValid = ids[0] !== "" && ids[1] !== "" && ids[2] >= 0;
-
-    if (isValid) {
-      const [startBoardId, startTodoId, startIndex] = ids;
-      updateTodo(startBoardId, boardId, startTodoId, startIndex, index);
-      resetDraggingValues();
-    }
-  };
-
-  return { handleDragStart, handleDrop };
 };
