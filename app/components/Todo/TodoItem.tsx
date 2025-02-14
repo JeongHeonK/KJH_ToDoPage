@@ -134,8 +134,8 @@ const useDragTodo = (boardId: string, todoId: string, index: number) => {
   const markDraggingValues = useBoardsStore(
     (state) => state.markDraggingValues,
   );
-  const getIds = useBoardsStore((state) => state.getIds);
   const updateTodo = useBoardsStore((state) => state.updateTodo);
+  const changeBoardId = useTodoStore((state) => state.changeBoardId);
   const resetDraggingValues = useBoardsStore(
     (state) => state.resetDraggingValues,
   );
@@ -145,14 +145,22 @@ const useDragTodo = (boardId: string, todoId: string, index: number) => {
   };
 
   const handleDrop = () => {
-    const ids = getIds();
-    const isValid = ids[0] !== "" && ids[1] !== "" && ids[2] >= 0;
+    const startBoardId = useBoardsStore.getState().draggingBoardId;
+    const startTodoId = useBoardsStore.getState().draggingTodoId;
+    const startIndex = useBoardsStore.getState().draggingIndex;
+
+    const isValid =
+      startBoardId !== null && startTodoId !== null && startIndex !== null;
 
     if (isValid) {
-      const [startBoardId, startTodoId, startIndex] = ids;
       updateTodo(startBoardId, boardId, startTodoId, startIndex, index);
-      resetDraggingValues();
+      if (startBoardId !== boardId) {
+        changeBoardId(startTodoId, boardId);
+        changeBoardId(todoId, startBoardId);
+      }
     }
+
+    resetDraggingValues();
   };
 
   return { handleDragStart, handleDrop };
