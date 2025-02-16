@@ -1,3 +1,3 @@
-import TodoItem from "./TodoItem";
+import Todos from "./Todos";
 
-export default TodoItem;
+export default Todos;

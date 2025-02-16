@@ -1,34 +1,24 @@
-import { useBoardsStore, useTodoStore } from "@/app/store";
+import { useBoardsStore } from "@/app/store";
 import { AnimatePresence } from "motion/react";
 
-import TodoItem from "../Todo";
 import TodoCreateButton from "../Todo/TodoCreateButton";
 import BoardTitle from "./BoardTitle";
 import BoardItemsWrapper from "./BoardItemsWrapper";
+import Todos from "../Todo";
 
 interface BoardItemProps {
   boardId: string;
 }
 
 export default function BoardItem({ boardId }: BoardItemProps) {
-  const { boardArr, isExisting, color } = useBoardItem(boardId);
+  const { isExisting, color } = useBoardItem(boardId);
 
   return (
     <AnimatePresence>
       {isExisting && (
         <BoardItemsWrapper color={color} boardId={boardId}>
           <BoardTitle boardId={boardId} />
-          {boardArr?.map(
-            (item, index) =>
-              item.isExisting && (
-                <TodoItem
-                  key={item.id}
-                  todoId={item.id}
-                  boardId={boardId}
-                  index={index}
-                />
-              ),
-          )}
+          <Todos boardId={boardId} />
           <TodoCreateButton boardId={boardId} />
         </BoardItemsWrapper>
       )}
@@ -42,10 +32,8 @@ const useBoardItem = (boardId: string) => {
       return state.boards.find((board) => board.id === boardId);
     }
   });
-  const todos = useTodoStore((state) => state.todos);
-  const boardArr = board?.todoIds?.map((id) => ({ ...todos[id], id }));
   const isExisting = board?.isExisting;
   const color = board?.color;
 
-  return { boardArr, isExisting, color };
+  return { isExisting, color };
 };
