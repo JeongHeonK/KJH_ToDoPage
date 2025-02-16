@@ -1,3 +1,4 @@
+import { DragEvent } from "react";
 import { Badge } from "@/components/ui/badge";
 import { useBoardsStore, useTodoStore } from "@/app/store";
 import { delay } from "@/app/util";
@@ -10,10 +11,11 @@ interface BoardTitleProps {
 }
 
 export default function BoardTitle({ boardId }: BoardTitleProps) {
-  const { handleClickDelete, title, color } = useBoardTitle(boardId);
+  const { handleClickDelete, title, color, handleDrop } =
+    useBoardTitle(boardId);
 
   return (
-    <div className="flex items-center relative mb-3">
+    <div className="flex items-center relative" onDrop={handleDrop}>
       <Badge color={color} className="absolute top-0 -left-1">
         {title}
       </Badge>
@@ -22,7 +24,7 @@ export default function BoardTitle({ boardId }: BoardTitleProps) {
       <button
         style={{ color }}
         onClick={handleClickDelete}
-        className="px-2 -mt-1.5 rounded-full text-lg text-white ml-1"
+        className="px-2 -mt-1.5 rounded-full text-lg text-white ml-1 pb-4"
       >
         x
       </button>
@@ -37,6 +39,10 @@ const useBoardTitle = (boardId: string) => {
     }
   });
   const deleteBoard = useBoardsStore((state) => state.deleteBoard);
+  const moveTodo = useBoardsStore((state) => state.moveTodo);
+  const changeBoardIdIndex = useBoardsStore(
+    (state) => state.changeBoardIdIndex,
+  );
   const deleteTodo = useTodoStore((state) => state.deleteTodo);
   const changeExistingState = useBoardsStore(
     (state) => state.changeExistingState,
@@ -54,5 +60,30 @@ const useBoardTitle = (boardId: string) => {
     }
   };
 
-  return { handleClickDelete, title, color };
+  const handleDrop = (e: DragEvent) => {
+    e.stopPropagation();
+    const { draggingType } = useBoardsStore.getState();
+    const { draggingTodoId } = useBoardsStore.getState();
+    const { draggingBoardId } = useBoardsStore.getState();
+
+    const isDraggingTodo = draggingType === "todo";
+    const isDroppingOnEmptyBoard = board?.todoIds.length === 0;
+    const hasValidValue = draggingBoardId && draggingTodoId;
+
+    if (!isDraggingTodo && draggingBoardId) {
+      changeBoardIdIndex(draggingBoardId, boardId);
+      return;
+    }
+
+    if (isDroppingOnEmptyBoard && hasValidValue) {
+      moveTodo(draggingBoardId, boardId, draggingTodoId);
+      return;
+    }
+
+    if (hasValidValue) {
+      moveTodo(draggingBoardId, boardId, draggingTodoId, true);
+    }
+  };
+
+  return { handleClickDelete, title, color, handleDrop };
 };

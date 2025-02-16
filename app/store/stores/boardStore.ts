@@ -28,7 +28,12 @@ type BoardActions = {
   resetDraggingValues: () => void;
   changeBoardIdIndex: (boarId: string, newBoardId: string) => void;
   markDraggingType: (type?: "board" | "todo") => void;
-  moveTodo: (boardId: string, newBoardId: string, todoId: string) => void;
+  moveTodo: (
+    boardId: string,
+    newBoardId: string,
+    todoId: string,
+    isFirstPlace?: boolean,
+  ) => void;
   markDraggingValues: (
     boardId?: string,
     todoId?: string,
@@ -133,7 +138,7 @@ export const useBoardsStore = create<BoardState & BoardActions>()(
             state.boards[index],
           ];
         }),
-      moveTodo: (boardId, newBoardId, todoId) =>
+      moveTodo: (boardId, newBoardId, todoId, isFirstPlace) =>
         set((state) => {
           if (!state.boards) return;
 
@@ -145,6 +150,12 @@ export const useBoardsStore = create<BoardState & BoardActions>()(
           state.boards[index].todoIds = state.boards[index].todoIds.filter(
             (id) => id !== todoId,
           );
+
+          if (isFirstPlace) {
+            state.boards[newIndex].todoIds.unshift(todoId);
+            return;
+          }
+
           state.boards[newIndex].todoIds.push(todoId);
         }),
       updateTodo: (boardId, newBoardId, todoId, index, newIndex) =>

@@ -48,13 +48,8 @@ const useBoardDrag = (boardId: string) => {
   const changeBoardIdIndex = useBoardsStore(
     (state) => state.changeBoardIdIndex,
   );
-  const board = useBoardsStore((state) => {
-    if (state.boards) {
-      return state.boards.find((board) => board.id === boardId);
-    }
-  });
-  const markDraggingType = useBoardsStore((state) => state.markDraggingType);
   const moveTodo = useBoardsStore((state) => state.moveTodo);
+  const markDraggingType = useBoardsStore((state) => state.markDraggingType);
 
   const handleDragStart = () => {
     markDraggingValues(boardId);
@@ -65,20 +60,16 @@ const useBoardDrag = (boardId: string) => {
     const { draggingType } = useBoardsStore.getState();
     const { draggingTodoId } = useBoardsStore.getState();
     const { draggingBoardId } = useBoardsStore.getState();
-
-    const isDroppingOnEmptyBoard =
-      draggingType === "todo" && board?.todoIds.length === 0;
-    const isTodoEvent = draggingType === "todo";
+    const isDraggingTodo = draggingType === "todo";
     const hasValidValue = draggingBoardId && draggingTodoId;
 
-    if (isDroppingOnEmptyBoard && hasValidValue) {
+    if (isDraggingTodo && hasValidValue) {
       moveTodo(draggingBoardId, boardId, draggingTodoId);
       return;
     }
 
-    if (isTodoEvent) return;
-
     const startBoardId = useBoardsStore.getState().draggingBoardId;
+
     if (startBoardId) {
       changeBoardIdIndex(startBoardId, boardId);
     }
