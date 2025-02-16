@@ -6,7 +6,6 @@ type Todo = {
   boardId: string;
   todo?: string | undefined;
   isCompleted: boolean;
-  isExisting: boolean;
 };
 
 export type TodoState = {
@@ -18,7 +17,6 @@ export type TodoActions = {
   editTodo: (todoId: string, data: Todo) => void;
   editIsCompleted: (todoId: string) => void;
   deleteTodo: (todoId: string) => void;
-  changeExistingState: (todoId: string) => void;
   changeBoardId: (todoId: string, boardId: string) => void;
 };
 
@@ -43,10 +41,6 @@ export const useTodoStore = create<TodoState & TodoActions>()(
       editIsCompleted: (todoId) =>
         set((state) => {
           state.todos[todoId].isCompleted = !state.todos[todoId].isCompleted;
-        }),
-      changeExistingState: (todoId) =>
-        set((state) => {
-          state.todos[todoId].isExisting = false;
         }),
       changeBoardId: (todoId, boardId) =>
         set((state) => {
