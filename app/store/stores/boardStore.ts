@@ -125,6 +125,7 @@ export const useBoardsStore = create<BoardState & BoardActions>()(
           state.draggingIndex = undefined;
           state.draggingTodoId = undefined;
           state.draggingBoardId = undefined;
+          state.draggingType = undefined;
         }),
       changeBoardIdIndex: (boardId, newBoardId) =>
         set((state) => {
