@@ -23,7 +23,7 @@ import {
   FORM_ANIMATION_STATE,
   FORM_TRANSITION,
 } from "@/app/constants";
-import { boardFormSchema } from "../../util/validation";
+import { boardFormSchema } from "../../util";
 import { useBoardsStore, useModalStore } from "../../store";
 
 export default function ModalBoardForm() {

@@ -8,7 +8,7 @@ import {
   DragEvent,
 } from "react";
 import { Input } from "@/components/ui/input";
-import { todoValidation } from "@/app/util/validation";
+import { todoValidation } from "@/app/util";
 import { useToast } from "@/hooks/use-toast";
 import { usePreventDefault } from "@/app/hooks";
 import TodoEditButton from "./TodoEditButton";
