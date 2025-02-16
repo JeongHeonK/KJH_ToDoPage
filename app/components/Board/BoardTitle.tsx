@@ -47,6 +47,9 @@ const useBoardTitle = (boardId: string) => {
   const changeExistingState = useBoardsStore(
     (state) => state.changeExistingState,
   );
+  const resetDraggingValues = useBoardsStore(
+    (state) => state.resetDraggingValues,
+  );
 
   const title = board?.title;
   const color = board?.color;
@@ -72,16 +75,19 @@ const useBoardTitle = (boardId: string) => {
 
     if (!isDraggingTodo && draggingBoardId) {
       changeBoardIdIndex(draggingBoardId, boardId);
+      resetDraggingValues();
       return;
     }
 
     if (isDroppingOnEmptyBoard && hasValidValue) {
       moveTodo(draggingBoardId, boardId, draggingTodoId);
+      resetDraggingValues();
       return;
     }
 
     if (hasValidValue) {
       moveTodo(draggingBoardId, boardId, draggingTodoId, true);
+      resetDraggingValues();
     }
   };
 

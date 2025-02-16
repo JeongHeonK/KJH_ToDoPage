@@ -44,9 +44,6 @@ const useTodoEditButton = (args: UseTodoEditButtonArgs) => {
 
   const deleteTodo = useTodoStore((state) => state.deleteTodo);
   const deleteTodoId = useBoardsStore((state) => state.deleteTodoId);
-  const changeExistingState = useTodoStore(
-    (state) => state.changeExistingState,
-  );
 
   const handleChangeEditingState = useCallback(
     (e: MouseEvent) => {
@@ -68,12 +65,11 @@ const useTodoEditButton = (args: UseTodoEditButtonArgs) => {
   const handleDelete = useCallback(
     async (e: MouseEvent) => {
       e.stopPropagation();
-      changeExistingState(todoId);
       await delay(ANIMATION_DELAY);
       deleteTodo(todoId);
       deleteTodoId(boardId, todoId);
     },
-    [boardId, changeExistingState, deleteTodo, deleteTodoId, todoId],
+    [boardId, deleteTodo, deleteTodoId, todoId],
   );
 
   return { handleEdit, handleDelete, handleChangeEditingState };
