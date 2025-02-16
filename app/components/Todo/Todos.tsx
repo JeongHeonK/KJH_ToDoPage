@@ -9,17 +9,14 @@ export default function Todos({ boardId }: TodosProps) {
   const boardArr = useTodos(boardId);
   return (
     <>
-      {boardArr?.map(
-        (item, index) =>
-          item.isExisting && (
-            <TodoItem
-              key={item.id}
-              todoId={item.id}
-              boardId={boardId}
-              index={index}
-            />
-          ),
-      )}
+      {boardArr?.map((item, index) => (
+        <TodoItem
+          key={item.id}
+          todoId={item.id}
+          boardId={boardId}
+          index={index}
+        />
+      ))}
     </>
   );
 }
