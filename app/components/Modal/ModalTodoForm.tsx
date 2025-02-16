@@ -23,7 +23,7 @@ import {
   FORM_ANIMATION_STATE,
   FORM_TRANSITION,
 } from "@/app/constants";
-import { todoFormSchema } from "../../util/validation";
+import { todoFormSchema } from "../../util";
 
 export default function ModalTodoFrom() {
   const { form, onSubmit, inputRef } = useModalTodoFrom();

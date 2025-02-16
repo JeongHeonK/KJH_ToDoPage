@@ -48,16 +48,22 @@ const useTodoEditButton = (args: UseTodoEditButtonArgs) => {
     (state) => state.changeExistingState,
   );
 
-  const handleChangeEditingState = useCallback((e: MouseEvent) => {
-    e.stopPropagation();
-    onClick();
-  }, []);
+  const handleChangeEditingState = useCallback(
+    (e: MouseEvent) => {
+      e.stopPropagation();
+      onClick();
+    },
+    [onClick],
+  );
 
-  const handleEdit = useCallback((e: MouseEvent) => {
-    e.stopPropagation();
-    onEdit();
-    onClick();
-  }, []);
+  const handleEdit = useCallback(
+    (e: MouseEvent) => {
+      e.stopPropagation();
+      onEdit();
+      onClick();
+    },
+    [onClick, onEdit],
+  );
 
   const handleDelete = useCallback(
     async (e: MouseEvent) => {
