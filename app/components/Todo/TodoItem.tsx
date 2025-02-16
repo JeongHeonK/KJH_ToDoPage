@@ -32,7 +32,7 @@ export default function TodoItem({ todoId, boardId, index }: TodoItemProps) {
   } = useTodo(todoId);
   const { handleDragStart, handleDrop } = useDragTodo(boardId, todoId, index);
   return (
-    <TodoItemWrapper todoId={todoId}>
+    <TodoItemWrapper todoId={todoId} index={index}>
       {isEditing ? (
         <Input
           className={`border-none h-6 p-0 max-w-40 flex-1 focus-visible:ring-none text-wrap pl-2 ${hasError && "focus-visible:ring-1 focus-visible:ring-red-600"}`}
