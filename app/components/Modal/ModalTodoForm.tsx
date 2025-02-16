@@ -78,7 +78,7 @@ const useModalTodoFrom = () => {
   const onSubmit: SubmitHandler<z.infer<typeof todoFormSchema>> = (data) => {
     const newTodoId = nanoid(8);
     if (boardId === null) return;
-    const newData = { ...data, boardId, isCompleted: false, isExisting: true };
+    const newData = { ...data, boardId, isCompleted: false };
     addTodoId(boardId, newTodoId);
     addTodo(newTodoId, newData);
     closeModal("idle");

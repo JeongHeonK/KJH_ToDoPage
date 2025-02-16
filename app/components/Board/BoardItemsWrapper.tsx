@@ -51,6 +51,9 @@ const useBoardDrag = (boardId: string) => {
   );
   const moveTodo = useBoardsStore((state) => state.moveTodo);
   const markDraggingType = useBoardsStore((state) => state.markDraggingType);
+  const resetDraggingValues = useBoardsStore(
+    (state) => state.resetDraggingValues,
+  );
 
   const handleDragStart = () => {
     markDraggingValues(boardId);
@@ -66,6 +69,7 @@ const useBoardDrag = (boardId: string) => {
 
     if (isDraggingTodo && hasValidValue) {
       moveTodo(draggingBoardId, boardId, draggingTodoId);
+      resetDraggingValues();
       return;
     }
 
@@ -73,6 +77,7 @@ const useBoardDrag = (boardId: string) => {
 
     if (startBoardId) {
       changeBoardIdIndex(startBoardId, boardId);
+      resetDraggingValues();
     }
   };
 
