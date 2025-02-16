@@ -27,12 +27,12 @@ export default function ModalBoardForm() {
   return (
     <Form {...form}>
       <motion.form
-        initial={{ opacity: 0, y: 80 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", duration: 0.1 }}
+        initial={formInitialState}
+        animate={formAnimation}
+        transition={formTransition}
+        onClick={useStopPropagation}
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 bg-white w-[350px] p-3 mx-auto left-0 right-0 fixed top-32 rounded-md"
-        onClick={useStopPropagation}
       >
         <FormField
           control={form.control}
@@ -60,6 +60,10 @@ export default function ModalBoardForm() {
     </Form>
   );
 }
+
+const formInitialState = { opacity: 0, y: 80 };
+const formAnimation = { opacity: 1, y: 0 };
+const formTransition = { type: "tween", duration: 0.25 };
 
 const useModalBoardForm = () => {
   const boardId = useModalStore((state) => state.boardId);
