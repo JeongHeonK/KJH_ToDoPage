@@ -18,6 +18,11 @@ import { nanoid } from "nanoid";
 import { useStopPropagation } from "@/app/hooks";
 import { useBoardsStore, useModalStore, useTodoStore } from "@/app/store";
 import * as motion from "motion/react-client";
+import {
+  FORM_INITIAL_STATE,
+  FORM_ANIMATION_STATE,
+  FORM_TRANSITION,
+} from "@/app/constants";
 import { todoFormSchema } from "../../util/validation";
 
 export default function ModalTodoFrom() {
@@ -26,9 +31,9 @@ export default function ModalTodoFrom() {
   return (
     <Form {...form}>
       <motion.form
-        initial={formInitialState}
-        animate={formAnimation}
-        transition={formTransition}
+        initial={FORM_INITIAL_STATE}
+        animate={FORM_ANIMATION_STATE}
+        transition={FORM_TRANSITION}
         onClick={useStopPropagation}
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 bg-white w-[350px] p-3 mx-auto left-0 right-0 fixed top-32 rounded-md"
@@ -55,10 +60,6 @@ export default function ModalTodoFrom() {
     </Form>
   );
 }
-
-const formInitialState = { opacity: 0, y: 80 };
-const formAnimation = { opacity: 1, y: 0 };
-const formTransition = { type: "tween", duration: 0.25 };
 
 const useModalTodoFrom = () => {
   const addTodo = useTodoStore((state) => state.addTodo);
