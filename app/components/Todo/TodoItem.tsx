@@ -167,7 +167,6 @@ const useDragTodo = (boardId: string, todoId: string, index: number) => {
       startBoardId !== undefined &&
       startTodoId !== undefined &&
       startIndex !== undefined;
-    console.log(startBoardId, boardId);
     if (isValid) {
       updateTodo(startBoardId, boardId, startTodoId, startIndex, index);
       if (startBoardId !== boardId) {
